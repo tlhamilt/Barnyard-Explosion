@@ -18,7 +18,7 @@ public class MyGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(.25f, 0.75f, .025f, 1);
+		Gdx.gl.glClearColor(.5f, 0.25f, .5f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(img, 175, 125);
