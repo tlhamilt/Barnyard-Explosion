@@ -30,7 +30,9 @@ public class MovingEntity extends Entity {
 	public void move(){
 		setXPos(getXPos() + xVelocity);
 		setYPos(getYPos() + yVelocity);
-		yVelocity -= gravity;
+		if(yVelocity > -5){
+			yVelocity -= gravity;
+		}
 		if(getYPos() < 0){
 			setYPos(0);
 			yVelocity = 0;
