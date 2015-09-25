@@ -3,6 +3,7 @@ package com.barnyard;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,6 +17,7 @@ public class MyGame extends ApplicationAdapter {
 	int yPos = 125;
 	MovingEntity player;
 	int gravity = -5;
+	Sound sound;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -23,10 +25,16 @@ public class MyGame extends ApplicationAdapter {
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
 		player = new MovingEntity(20, 100, 20, 20, this, 0, 0);
+		 sound = Gdx.audio.newSound(Gdx.files.internal("testSong.mp3"));
+		 sound.play();
 	}
 
 	@Override
 	public void render () {
+		
+		//sound.play();
+		//sound.loop();
+		
 		if(keyboardListener.keysPressed[Keys.LEFT]){
 			player.setXVelocity(-5);
 		}
