@@ -31,10 +31,6 @@ public class MyGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		
-		//sound.play();
-		//sound.loop();
-		
 		if(keyboardListener.keysPressed[Keys.LEFT]){
 			player.setXVelocity(-5);
 		}
