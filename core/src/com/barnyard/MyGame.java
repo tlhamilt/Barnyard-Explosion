@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
@@ -103,11 +104,12 @@ public class MyGame extends ApplicationAdapter {
 		if(!keyboardListener.keysPressed[Keys.LEFT] && !keyboardListener.keysPressed[Keys.RIGHT]){
 			player.setXVelocity(0);
 		}
-		if(keyboardListener.keysPressed[Keys.SPACE] && player.getYPos() == 0){
+		if(keyboardListener.keysPressed[Keys.SPACE] && player.grounded){
 			player.setYVelocity(20);
 		}
+		player.grounded = false;
 		player.move();
-		if(player.getXPos() + player.getWidth() > block.getXPos() && player.getXPos() < block.getXPos() + block.getWidth() && player.getYPos() < block.getYPos() + block.getHeight() + player.getHeight() && player.getYPos() > block.getYPos() - player.getYPos()){
+		/*if(player.getXPos() + player.getWidth() > block.getXPos() && player.getXPos() < block.getXPos() + block.getWidth() && player.getYPos() < block.getYPos() + block.getHeight() + player.getHeight() && player.getYPos() > block.getYPos() - player.getYPos()){
 			player.setXVelocity(0);
 			player.setXPos(block.getXPos() - player.getWidth());
 		}
@@ -116,6 +118,7 @@ public class MyGame extends ApplicationAdapter {
 			player.setYVelocity(0);
 			player.setYPos(block.getYPos() + block.getHeight());
 		}
+		*/
 		Gdx.gl.glClearColor(.5f, 0.25f, .25f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
@@ -132,5 +135,9 @@ public class MyGame extends ApplicationAdapter {
 		batch.end();
 		
 	}
-	
+	boolean isColliding(MovingEntity player, Entity block){
+		Rectangle playerRect = new Rectangle(player.getXPos(), player.getYPos(), 32, 32);
+		Rectangle otherRect = new Rectangle(block.getXPos(), block.getYPos(), 32, 32);
+		return playerRect.overlaps(otherRect);
+	}
 }
