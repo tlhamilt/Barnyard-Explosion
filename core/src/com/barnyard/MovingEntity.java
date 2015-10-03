@@ -30,15 +30,31 @@ public class MovingEntity extends Entity {
 	
 	public void move(){
 		setXPos(getXPos() + xVelocity);
-		if(yVelocity > -5){
+		if(yVelocity > -10){
 			yVelocity -= gravity;
 		}
-		if(parent.isColliding(this, parent.block)){
-			setYPos(parent.block.getYPos() + 32);
+		grounded = false;
+		int dir = parent.isColliding(this, parent.block);
+		if(dir == 1){
+			setYPos(parent.block.getYPos() + parent.block.getHeight());
 			yVelocity = 0;
 			grounded = true;
 		}
-		setYPos(getYPos() + yVelocity);
+		else if(dir == 2){
+			setYPos(parent.block.getYPos() - getHeight());
+			yVelocity = 0;
+		}
+		else if(dir == 3){
+			setXPos(parent.block.getXPos() + parent.block.getWidth());
+			xVelocity = 0;
+		}
+		else if(dir == 4){
+			setXPos(parent.block.getXPos() - getWidth());
+		}
+		if(yVelocity != 0)
+		{
+			setYPos(getYPos() + yVelocity);
+		}
 		
 		if(getYPos() < 0){
 			setYPos(0);

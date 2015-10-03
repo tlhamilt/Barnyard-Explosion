@@ -13,7 +13,8 @@ public class Entity {
 	public Entity(int xPos, int yPos, int width, int height, MyGame parent){
 		this.xPos = xPos;
 		this.yPos = yPos;
-		hitBox = new Rectangle(xPos, yPos, width, height);
+		this.width = width;
+		this.height = height;
 		this.parent = parent;
 	}
 	
