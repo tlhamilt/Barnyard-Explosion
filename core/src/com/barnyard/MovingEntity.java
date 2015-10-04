@@ -1,9 +1,8 @@
 package com.barnyard;
 
-public class MovingEntity extends Entity {
+public abstract class MovingEntity extends Entity {
 	private int xVelocity;
 	private int yVelocity;
-	private int gravity = 1;
 	public boolean grounded = false;
 	
 	public MovingEntity(int xPos, int yPos, int width, int height, MyGame parent, int xVelocity, int yVelocity){
@@ -28,38 +27,5 @@ public class MovingEntity extends Entity {
 		yVelocity = y;
 	}
 	
-	public void move(){
-		setXPos(getXPos() + xVelocity);
-		if(yVelocity > -10){
-			yVelocity -= gravity;
-		}
-		grounded = false;
-		int dir = parent.isColliding(this, parent.block);
-		if(dir == 1){
-			setYPos(parent.block.getYPos() + parent.block.getHeight());
-			yVelocity = 0;
-			grounded = true;
-		}
-		else if(dir == 2){
-			setYPos(parent.block.getYPos() - getHeight());
-			yVelocity = 0;
-		}
-		else if(dir == 3){
-			setXPos(parent.block.getXPos() + parent.block.getWidth());
-			xVelocity = 0;
-		}
-		else if(dir == 4){
-			setXPos(parent.block.getXPos() - getWidth());
-		}
-		if(yVelocity != 0)
-		{
-			setYPos(getYPos() + yVelocity);
-		}
-		
-		if(getYPos() < 0){
-			setYPos(0);
-			yVelocity = 0;
-			grounded = true;
-		}
-	}
+	public abstract void move();
 }

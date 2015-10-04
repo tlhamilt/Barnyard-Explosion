@@ -2,7 +2,7 @@ package com.barnyard;
 
 import com.badlogic.gdx.math.Rectangle;
 
-public class Entity {
+public abstract class Entity {
 	private int xPos;
 	private int yPos;
 	private int width;
@@ -16,6 +16,7 @@ public class Entity {
 		this.width = width;
 		this.height = height;
 		this.parent = parent;
+		hitBox = new Rectangle(xPos, yPos, width, height);
 	}
 	
 	public int getXPos(){
@@ -28,10 +29,12 @@ public class Entity {
 	
 	public void setXPos(int x){
 		xPos = x;
+		hitBox = new Rectangle(xPos, yPos, width, height);
 	}
 	
 	public void setYPos(int y){
 		yPos = y;
+		hitBox = new Rectangle(xPos, yPos, width, height);
 	}
 	
 	public int getWidth(){

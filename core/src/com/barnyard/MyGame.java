@@ -1,39 +1,24 @@
 package com.barnyard;
 
+import java.util.ArrayList;
 import com.badlogic.gdx.ApplicationAdapter;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.*;
 
-//This is a comment
 public class MyGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	Sprite playerSprite;
-	Sprite blockSprite;
 	Texture playerImg;
 	Texture blockImg;
-	World world;
-	Body playerBody;
-	Body blockBody;
-	OrthographicCamera camera;
-	final float PIXELS_TO_METERS = 100f;
-	final short PLAYER_ENTITY = 0x1;
-	final short BLOCK_ENTITY = 0x1 << 1;
 	
 	Listener keyboardListener;
-	int xPos = 175;
-	int yPos = 125;
-	MovingEntity player;
-	Entity block;
-	int gravity = -5;
+	ArrayList<PlayerEntity> players = new ArrayList<PlayerEntity>();
+	ArrayList<StationaryEntity> blocks = new ArrayList<StationaryEntity>();
+	int gravity = 1;
 	Sound sound;
 	@Override
 	public void create () {
@@ -43,38 +28,46 @@ public class MyGame extends ApplicationAdapter {
 		
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
-		player = new MovingEntity(100, 100, 32, 32, this, 0, 0);
-		block = new Entity(50, 150, 32, 32, this);
-		 sound = Gdx.audio.newSound(Gdx.files.internal("testSong.mp3"));
-		 sound.play();
+		players.add(new PlayerEntity(100, 50, 32, 32, this, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.SPACE));
+		players.add(new PlayerEntity(150, 50, 32, 32, this, 0, 0, Keys.A, Keys.D, Keys.C));
+		players.add(new PlayerEntity(200, 50, 32, 32, this, 0, 0, Keys.J, Keys.L, Keys.PERIOD));
+		blocks.add(new StationaryEntity(50, 150, 32, 32, this));
+		blocks.add(new StationaryEntity(170, 100, 32, 32, this));
+		blocks.add(new StationaryEntity(290, 50, 32, 32, this));
+		 sound = Gdx.audio.newSound(Gdx.files.internal("RiverValleyBreakdown.mp3"));
+		 sound.loop();
 	}
 
 	@Override
 	public void render () {
-		if(keyboardListener.keysPressed[Keys.LEFT]){
-			player.setXVelocity(-5);
-		}
-		if(keyboardListener.keysPressed[Keys.RIGHT]){
-			player.setXVelocity(5);
-		}
-		if(!keyboardListener.keysPressed[Keys.LEFT] && !keyboardListener.keysPressed[Keys.RIGHT]){
-			player.setXVelocity(0);
-		}
-		if(keyboardListener.keysPressed[Keys.SPACE] && player.grounded){
-			player.setYVelocity(20);
+		for(PlayerEntity p : players){
+			if(keyboardListener.keysPressed[p.leftKey]){
+				p.setXVelocity(-5);
+			}
+			if(keyboardListener.keysPressed[p.rightKey]){
+				p.setXVelocity(5);
+			}
+			if(!keyboardListener.keysPressed[p.leftKey] && !keyboardListener.keysPressed[p.rightKey]){
+				p.setXVelocity(0);
+			}
+			if(keyboardListener.keysPressed[p.jumpKey] && p.grounded){
+				p.setYVelocity(20);
+			}
+			p.move();
 		}
 		
-		player.move();
 		Gdx.gl.glClearColor(.5f, 0.25f, .25f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		
-		batch.draw(playerImg, player.getXPos(), player.getYPos());
-		batch.draw(blockImg, block.getXPos(), block.getYPos());
+		for(PlayerEntity p : players){
+			batch.draw(playerImg, p.getXPos(), p.getYPos());
+		}
+		for(StationaryEntity b : blocks)
+		batch.draw(blockImg, b.getXPos(), b.getYPos());
 		batch.end();
 		
 	}
-	int isColliding(MovingEntity player, Entity block){
+	int isColliding(MovingEntity e1, Entity e2){
 		// This method determines if a player and a block are colliding, and if so,
 		// which side the player is colliding with.
 		// The program returns 0 if there is no collision,
@@ -82,41 +75,40 @@ public class MyGame extends ApplicationAdapter {
 		// returns 2 if the player is colliding with the south side,
 		// returns 3 if the player is colliding with the east side,
 		// and returns 4 if the player is colliding with the west side.
-		Rectangle playerRect = new Rectangle(player.getXPos(), player.getYPos(), 32, 32);
-		Rectangle otherRect = new Rectangle(block.getXPos(), block.getYPos(), 32, 32);
+
 		// determines if there is a collision
-		if(!playerRect.overlaps(otherRect)){
+		if(!e1.getHitBox().overlaps(e2.getHitBox())){
 			return 0;
 		}
 		// for each possible side, a rectangle is generated containing all possible points that
 		// the player's position could be if they are colliding on that side
-		int x = block.getXPos() - player.getWidth();
-		int y = block.getYPos() + (block.getHeight() / 2) - (player.getHeight() / 2);
-		int w = player.getWidth() + block.getWidth();
-		int h = (block.getHeight() / 2) + (player.getHeight() / 2);
+		int x = e2.getXPos() - e1.getWidth();
+		int y = e2.getYPos() + (e2.getHeight() / 2) - (e1.getHeight() / 2);
+		int w = e1.getWidth() + e2.getWidth();
+		int h = (e2.getHeight() / 2) + (e1.getHeight() / 2);
 		Rectangle northRect = new Rectangle(x, y, w, h);
 		// if the created rectangle contains the player's position, the collision is on that side
-		if(northRect.contains(player.getXPos(), player.getYPos()) && player.getYPos() - player.getYVelocity() > block.getYPos() + block.getHeight()){
+		if(northRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() - e1.getYVelocity() > e2.getYPos() + e2.getHeight()){
 			return 1;
 		}
-		y = block.getYPos() - player.getHeight();
+		y = e2.getYPos() - e1.getHeight();
 		h -= 1;
 		Rectangle southRect = new Rectangle(x, y, w, h);
-		if(southRect.contains(player.getXPos(), player.getYPos()) && player.getYPos() + player.getHeight() - player.getYVelocity() < block.getYPos()){
+		if(southRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() + e1.getHeight() - e1.getYVelocity() < e2.getYPos()){
 			return 2;
 		}
-		x = block.getXPos() + (block.getWidth() / 2) - (player.getWidth() / 2);
-		y = block.getYPos() - player.getHeight();
-		w = (block.getWidth() / 2) + (player.getWidth() / 2);
-		h = player.getHeight() + block.getHeight();
+		x = e2.getXPos() + (e2.getWidth() / 2) - (e1.getWidth() / 2);
+		y = e2.getYPos() - e1.getHeight();
+		w = (e2.getWidth() / 2) + (e1.getWidth() / 2);
+		h = e1.getHeight() + e2.getHeight();
 		Rectangle eastRect = new Rectangle(x, y, w, h);
-		if(eastRect.contains(player.getXPos(), player.getYPos())){
+		if(eastRect.contains(e1.getXPos(), e1.getYPos())){
 			return 3;
 		}
-		x = block.getXPos() - player.getWidth();
+		x = e2.getXPos() - e1.getWidth();
 		w -= 1;
 		Rectangle westRect = new Rectangle(x, y, w, h);
-		if(westRect.contains(player.getXPos(), player.getYPos())){
+		if(westRect.contains(e1.getXPos(), e1.getYPos())){
 			return 4;
 		}
 		return 0;
