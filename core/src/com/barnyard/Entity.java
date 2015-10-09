@@ -1,5 +1,6 @@
 package com.barnyard;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Entity {
@@ -8,14 +9,16 @@ public abstract class Entity {
 	private int width;
 	private int height;
 	private Rectangle hitBox;
+	private Sprite sprite;
 	public MyGame parent;
 	
-	public Entity(int xPos, int yPos, int width, int height, MyGame parent){
+	public Entity(int xPos, int yPos, int width, int height, MyGame parent, Sprite sprite){
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.width = width;
 		this.height = height;
 		this.parent = parent;
+		this.sprite = sprite;
 		hitBox = new Rectangle(xPos, yPos, width, height);
 	}
 	
@@ -57,5 +60,9 @@ public abstract class Entity {
 	public void setHeight(int h){
 		height = h;
 		hitBox = new Rectangle(xPos, yPos, width, height);
+	}
+	
+	public Sprite getSprite(){
+		return sprite;
 	}
 }

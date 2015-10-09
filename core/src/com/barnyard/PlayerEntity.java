@@ -1,19 +1,23 @@
 package com.barnyard;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 public class PlayerEntity extends MovingEntity {
 	private int health;
 	public int upKey;
 	public int leftKey;
 	public int rightKey;
 	public int jumpKey;
+	public int direction;
 	// variable for weapon eqquiped
 
-	public PlayerEntity(int xPos, int yPos, int width, int height, MyGame parent, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey){
-		super(xPos, yPos, width, height, parent, xVelocity, yVelocity);
+	public PlayerEntity(int xPos, int yPos, int width, int height, MyGame parent, Sprite sprite, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey){
+		super(xPos, yPos, width, height, parent, sprite, xVelocity, yVelocity);
 		health = 100;
 		this.leftKey = leftKey;
 		this.rightKey = rightKey;
 		this.jumpKey = jumpKey;
+		direction = 1;
 	}
 	
 	public void move(){

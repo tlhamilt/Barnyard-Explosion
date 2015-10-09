@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -14,7 +15,6 @@ public class MyGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture playerImg;
 	Texture blockImg;
-	
 	Listener keyboardListener;
 	ArrayList<PlayerEntity> players = new ArrayList<PlayerEntity>();
 	ArrayList<StationaryEntity> blocks = new ArrayList<StationaryEntity>();
@@ -28,12 +28,12 @@ public class MyGame extends ApplicationAdapter {
 		
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
-		players.add(new PlayerEntity(100, 50, 32, 32, this, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.SPACE));
-		players.add(new PlayerEntity(150, 50, 32, 32, this, 0, 0, Keys.A, Keys.D, Keys.C));
-		players.add(new PlayerEntity(200, 50, 32, 32, this, 0, 0, Keys.J, Keys.L, Keys.PERIOD));
-		blocks.add(new StationaryEntity(50, 150, 32, 32, this));
-		blocks.add(new StationaryEntity(170, 100, 32, 32, this));
-		blocks.add(new StationaryEntity(290, 50, 32, 32, this));
+		players.add(new PlayerEntity(100, 50, 32, 32, this, new Sprite(playerImg), 0, 0, Keys.LEFT, Keys.RIGHT, Keys.SPACE));
+		players.add(new PlayerEntity(150, 50, 32, 32, this, new Sprite(playerImg), 0, 0, Keys.A, Keys.D, Keys.C));
+		players.add(new PlayerEntity(200, 50, 32, 32, this, new Sprite(playerImg), 0, 0, Keys.J, Keys.L, Keys.PERIOD));
+		blocks.add(new StationaryEntity(50, 150, 32, 32, this, new Sprite(blockImg)));
+		blocks.add(new StationaryEntity(170, 100, 32, 32, this, new Sprite(blockImg)));
+		blocks.add(new StationaryEntity(290, 50, 32, 32, this, new Sprite(blockImg)));
 		 sound = Gdx.audio.newSound(Gdx.files.internal("RiverValleyBreakdown.mp3"));
 		 sound.loop();
 	}
@@ -43,9 +43,17 @@ public class MyGame extends ApplicationAdapter {
 		for(PlayerEntity p : players){
 			if(keyboardListener.keysPressed[p.leftKey]){
 				p.setXVelocity(-5);
+				if(p.direction == 1){
+					p.direction = -1;
+					p.getSprite().flip(true, false);
+				}
 			}
 			if(keyboardListener.keysPressed[p.rightKey]){
 				p.setXVelocity(5);
+				if(p.direction == -1){
+					p.direction = 1;
+					p.getSprite().flip(true, false);
+				}
 			}
 			if(!keyboardListener.keysPressed[p.leftKey] && !keyboardListener.keysPressed[p.rightKey]){
 				p.setXVelocity(0);
@@ -61,6 +69,7 @@ public class MyGame extends ApplicationAdapter {
 		batch.begin();
 		for(PlayerEntity p : players){
 			batch.draw(playerImg, p.getXPos(), p.getYPos());
+			batch.draw(p.getSprite(), p.getXPos(), p.getYPos());
 		}
 		for(StationaryEntity b : blocks)
 		batch.draw(blockImg, b.getXPos(), b.getYPos());

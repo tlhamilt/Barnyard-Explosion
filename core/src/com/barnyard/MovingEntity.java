@@ -1,12 +1,14 @@
 package com.barnyard;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
 public abstract class MovingEntity extends Entity {
 	private int xVelocity;
 	private int yVelocity;
 	public boolean grounded = false;
 	
-	public MovingEntity(int xPos, int yPos, int width, int height, MyGame parent, int xVelocity, int yVelocity){
-		super(xPos, yPos, width, height, parent);
+	public MovingEntity(int xPos, int yPos, int width, int height, MyGame parent, Sprite sprite, int xVelocity, int yVelocity){
+		super(xPos, yPos, width, height, parent, sprite);
 		this.xVelocity = xVelocity;
 		this.yVelocity = yVelocity;
 	}
