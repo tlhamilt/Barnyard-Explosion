@@ -16,6 +16,8 @@ public class MyGame extends ApplicationAdapter {
 	Texture horseImg;
 	Texture cowImg;
 	Texture pigImg;
+	Texture chickenImg;
+	Sprite chickenSprite;
 	Texture blockImg;
 	Listener keyboardListener;
 	ArrayList<PlayerEntity> players = new ArrayList<PlayerEntity>();
@@ -28,13 +30,17 @@ public class MyGame extends ApplicationAdapter {
 		horseImg = new Texture("HorseStanding.png");
 		cowImg = new Texture("CowStanding.png");
 		pigImg = new Texture("PigTemplate.png");
+		chickenImg = new Texture("newchicken.png");
 		blockImg = new Texture("GroundMiddle.png");
+		chickenSprite = new Sprite(chickenImg);
+		chickenSprite.flip(true, false);
 		
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
-		players.add(new PlayerEntity(100, 50, 32, 64, this, new Sprite(horseImg), 0, 0, Keys.LEFT, Keys.RIGHT, Keys.DOWN));
-		players.add(new PlayerEntity(150, 50, 32, 64, this, new Sprite(cowImg), 0, 0, Keys.A, Keys.D, Keys.S));
-		players.add(new PlayerEntity(200, 50, 32, 64, this, new Sprite(pigImg), 0, 0, Keys.J, Keys.L, Keys.K));
+		players.add(new PlayerEntity(100, 50, 32, 64, this, new Sprite(horseImg), 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP));
+		players.add(new PlayerEntity(150, 50, 32, 64, this, new Sprite(cowImg), 0, 0, Keys.A, Keys.D, Keys.W));
+		players.add(new PlayerEntity(200, 50, 32, 64, this, new Sprite(pigImg), 0, 0, Keys.J, Keys.L, Keys.I));
+		players.add(new PlayerEntity(370, 50, 32, 64, this, chickenSprite, 0, 0, Keys.F, Keys.H, Keys.T));
 		blocks.add(new StationaryEntity(50, 150, 64, 64, this, new Sprite(blockImg)));
 		blocks.add(new StationaryEntity(170, 100, 64, 64, this, new Sprite(blockImg)));
 		blocks.add(new StationaryEntity(290, 50, 64, 64, this, new Sprite(blockImg)));
