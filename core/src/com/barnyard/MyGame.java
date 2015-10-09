@@ -68,7 +68,6 @@ public class MyGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		for(PlayerEntity p : players){
-			batch.draw(playerImg, p.getXPos(), p.getYPos());
 			batch.draw(p.getSprite(), p.getXPos(), p.getYPos());
 		}
 		for(StationaryEntity b : blocks)
