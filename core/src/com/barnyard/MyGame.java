@@ -13,7 +13,9 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class MyGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture playerImg;
+	Texture horseImg;
+	Texture cowImg;
+	Texture pigImg;
 	Texture blockImg;
 	Listener keyboardListener;
 	ArrayList<PlayerEntity> players = new ArrayList<PlayerEntity>();
@@ -23,17 +25,19 @@ public class MyGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		playerImg = new Texture("player.png");
-		blockImg = new Texture("block.png");
+		horseImg = new Texture("HorseStanding.png");
+		cowImg = new Texture("CowStanding.png");
+		pigImg = new Texture("PigTemplate.png");
+		blockImg = new Texture("GroundMiddle.png");
 		
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
-		players.add(new PlayerEntity(100, 50, 32, 32, this, new Sprite(playerImg), 0, 0, Keys.LEFT, Keys.RIGHT, Keys.SPACE));
-		players.add(new PlayerEntity(150, 50, 32, 32, this, new Sprite(playerImg), 0, 0, Keys.A, Keys.D, Keys.C));
-		players.add(new PlayerEntity(200, 50, 32, 32, this, new Sprite(playerImg), 0, 0, Keys.J, Keys.L, Keys.PERIOD));
-		blocks.add(new StationaryEntity(50, 150, 32, 32, this, new Sprite(blockImg)));
-		blocks.add(new StationaryEntity(170, 100, 32, 32, this, new Sprite(blockImg)));
-		blocks.add(new StationaryEntity(290, 50, 32, 32, this, new Sprite(blockImg)));
+		players.add(new PlayerEntity(100, 50, 32, 64, this, new Sprite(horseImg), 0, 0, Keys.LEFT, Keys.RIGHT, Keys.DOWN));
+		players.add(new PlayerEntity(150, 50, 32, 64, this, new Sprite(cowImg), 0, 0, Keys.A, Keys.D, Keys.S));
+		players.add(new PlayerEntity(200, 50, 32, 64, this, new Sprite(pigImg), 0, 0, Keys.J, Keys.L, Keys.K));
+		blocks.add(new StationaryEntity(50, 150, 64, 64, this, new Sprite(blockImg)));
+		blocks.add(new StationaryEntity(170, 100, 64, 64, this, new Sprite(blockImg)));
+		blocks.add(new StationaryEntity(290, 50, 64, 64, this, new Sprite(blockImg)));
 		 sound = Gdx.audio.newSound(Gdx.files.internal("RiverValleyBreakdown.mp3"));
 		 sound.loop();
 	}
@@ -59,19 +63,20 @@ public class MyGame extends ApplicationAdapter {
 				p.setXVelocity(0);
 			}
 			if(keyboardListener.keysPressed[p.jumpKey] && p.grounded){
-				p.setYVelocity(20);
+				p.setYVelocity(16);
 			}
 			p.move();
 		}
 		
-		Gdx.gl.glClearColor(.5f, 0.25f, .25f, 1);
+		//Gdx.gl.glClearColor(.5f, 0.25f, .25f, 1);
+		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		for(PlayerEntity p : players){
 			batch.draw(p.getSprite(), p.getXPos(), p.getYPos());
 		}
 		for(StationaryEntity b : blocks)
-		batch.draw(blockImg, b.getXPos(), b.getYPos());
+		batch.draw(b.getSprite(), b.getXPos(), b.getYPos());
 		batch.end();
 		
 	}
