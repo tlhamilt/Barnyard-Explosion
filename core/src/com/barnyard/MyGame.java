@@ -13,8 +13,8 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class MyGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture[] horseTextures;
-	Texture[] cowTextures;
+	Texture[] horseTextures; //We should probably store character data in an excel file
+	Texture[] cowTextures;   //and parse the data from it based on character selection
 	Texture[] pigTextures;
 	Texture[] chickenTextures;
 
@@ -28,6 +28,10 @@ public class MyGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		//Menu
+			//character selection
+		
+		//These are the texture arrays that store all of the animation states
 		horseTextures = new Texture[]{new Texture("HorseStanding.png"),new Texture("HorseWalking.png"),new Texture("HorsePunching.png"),new Texture("HorseSound.png")};
 		cowTextures = new Texture[]{new Texture("CowStanding.png"),new Texture("CowWalking.png"),new Texture("CowPunching.png"),new Texture("CowSound.png")};
 		pigTextures = new Texture[]{new Texture("PigStanding.png"),new Texture("PigWalking.png"),new Texture("PigPunching.png")};
@@ -38,6 +42,7 @@ public class MyGame extends ApplicationAdapter {
 		
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
+		//PlayerEntities now accept texture arrays
 		players.add(new PlayerEntity(100, 50, 32, 64, this,horseTextures, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP));
 		players.add(new PlayerEntity(150, 50, 32, 64, this, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W));
 		players.add(new PlayerEntity(200, 50, 32, 64, this, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I));

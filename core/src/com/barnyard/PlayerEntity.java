@@ -25,7 +25,8 @@ public class PlayerEntity extends MovingEntity {
 		this.jumpKey = jumpKey;
 		direction = 1;
 	}
-	// This controls the animations of the characters
+	
+	// This controls the animation image of the characters
 	// Index Reference: 0 - Standing, 1 - Walking, 2 - Punching, 3 - Speaking/Sound
 	public void setCharacterState(int state){ 
 		setSprite(new Sprite(characterAnimations[state])); 
