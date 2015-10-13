@@ -13,10 +13,11 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class MyGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture horseImg;
-	Texture cowImg;
-	Texture pigImg;
-	Texture chickenImg;
+	Texture[] horseTextures;
+	Texture[] cowTextures;
+	Texture[] pigTextures;
+	Texture[] chickenTextures;
+
 	Sprite chickenSprite;
 	Texture blockImg;
 	Listener keyboardListener;
@@ -27,39 +28,39 @@ public class MyGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		horseImg = new Texture("HorseStanding.png");
-		cowImg = new Texture("CowStanding.png");
-		pigImg = new Texture("PigTemplate.png");
-		chickenImg = new Texture("newchicken.png");
+		horseTextures = new Texture[]{new Texture("HorseStanding.png"),new Texture("HorseWalking.png"),new Texture("HorsePunching.png"),new Texture("HorseSound.png")};
+		cowTextures = new Texture[]{new Texture("CowStanding.png"),new Texture("CowWalking.png"),new Texture("CowPunching.png"),new Texture("CowSound.png")};
+		pigTextures = new Texture[]{new Texture("PigStanding.png"),new Texture("PigWalking.png"),new Texture("PigPunching.png")};
+		chickenTextures = new Texture[]{new Texture("ChickenStanding.png"),new Texture("ChickenWalking.png"),new Texture("ChickenPunching.png")};
+
 		blockImg = new Texture("GroundMiddle.png");
-		chickenSprite = new Sprite(chickenImg);
-		chickenSprite.flip(true, false);
+		
 		
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
-		players.add(new PlayerEntity(100, 50, 32, 64, this, new Sprite(horseImg), 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP));
-		players.add(new PlayerEntity(150, 50, 32, 64, this, new Sprite(cowImg), 0, 0, Keys.A, Keys.D, Keys.W));
-		players.add(new PlayerEntity(200, 50, 32, 64, this, new Sprite(pigImg), 0, 0, Keys.J, Keys.L, Keys.I));
-		players.add(new PlayerEntity(370, 50, 32, 64, this, chickenSprite, 0, 0, Keys.F, Keys.H, Keys.T));
+		players.add(new PlayerEntity(100, 50, 32, 64, this,horseTextures, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP));
+		players.add(new PlayerEntity(150, 50, 32, 64, this, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W));
+		players.add(new PlayerEntity(200, 50, 32, 64, this, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I));
+		players.add(new PlayerEntity(370, 50, 32, 64, this, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T));
 		blocks.add(new StationaryEntity(50, 150, 64, 64, this, new Sprite(blockImg)));
 		blocks.add(new StationaryEntity(170, 100, 64, 64, this, new Sprite(blockImg)));
 		blocks.add(new StationaryEntity(290, 50, 64, 64, this, new Sprite(blockImg)));
-		 sound = Gdx.audio.newSound(Gdx.files.internal("RiverValleyBreakdown.mp3"));
-		 sound.loop();
+		sound = Gdx.audio.newSound(Gdx.files.internal("RiverValleyBreakdown.mp3"));
+		sound.loop();
 	}
 
 	@Override
 	public void render () {
 		for(PlayerEntity p : players){
 			if(keyboardListener.keysPressed[p.leftKey]){
-				p.setXVelocity(-5);
+				p.setXVelocity(-2);
 				if(p.direction == 1){
 					p.direction = -1;
 					p.getSprite().flip(true, false);
 				}
 			}
 			if(keyboardListener.keysPressed[p.rightKey]){
-				p.setXVelocity(5);
+				p.setXVelocity(2);
 				if(p.direction == -1){
 					p.direction = 1;
 					p.getSprite().flip(true, false);
@@ -67,6 +68,7 @@ public class MyGame extends ApplicationAdapter {
 			}
 			if(!keyboardListener.keysPressed[p.leftKey] && !keyboardListener.keysPressed[p.rightKey]){
 				p.setXVelocity(0);
+				p.setCharacterState(0);
 			}
 			if(keyboardListener.keysPressed[p.jumpKey] && p.grounded){
 				p.setYVelocity(16);

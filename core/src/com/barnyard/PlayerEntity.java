@@ -1,5 +1,6 @@
 package com.barnyard;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class PlayerEntity extends MovingEntity {
@@ -9,18 +10,41 @@ public class PlayerEntity extends MovingEntity {
 	public int rightKey;
 	public int jumpKey;
 	public int direction;
+	private Texture[] characterAnimations;
+	private int animationCounter = 0;
+	private int animationState;
 	// variable for weapon eqquiped
 
-	public PlayerEntity(int xPos, int yPos, int width, int height, MyGame parent, Sprite sprite, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey){
-		super(xPos, yPos, width, height, parent, sprite, xVelocity, yVelocity);
+	public PlayerEntity(int xPos, int yPos, int width, int height, MyGame parent, Texture[] animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey){
+		super(xPos, yPos, width, height, parent, new Sprite(animations[0]), xVelocity, yVelocity);
 		health = 100;
+		characterAnimations = animations;
+		animationState = 0;
 		this.leftKey = leftKey;
 		this.rightKey = rightKey;
 		this.jumpKey = jumpKey;
 		direction = 1;
 	}
+	// This controls the animations of the characters
+	// Index Reference: 0 - Standing, 1 - Walking, 2 - Punching, 3 - Speaking/Sound
+	public void setCharacterState(int state){ 
+		setSprite(new Sprite(characterAnimations[state])); 
+		animationState = state;
+		if (direction == -1){
+			getSprite().flip(true, false);
+		}
+	}
 	
 	public void move(){
+		
+		if(animationCounter % 10 == 0 && grounded){//Temporary Walking Animation
+			if(animationState == 0){			   //May need to change for added animations
+				setCharacterState(1);
+			}else{
+				setCharacterState(0);
+				}
+		}
+
 		setXPos(getXPos() + getXVelocity());
 		if(getYVelocity() > -10){
 			setYVelocity(getYVelocity() - parent.gravity);
@@ -57,6 +81,8 @@ public class PlayerEntity extends MovingEntity {
 			setYVelocity(0);
 			grounded = true;
 		}
+		if(getXVelocity() != 0)//Walking Animation Timer
+		animationCounter++;
 	}
 	
 	public void die(){

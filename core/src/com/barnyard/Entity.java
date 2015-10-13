@@ -61,7 +61,9 @@ public abstract class Entity {
 		height = h;
 		hitBox = new Rectangle(xPos, yPos, width, height);
 	}
-	
+	public void setSprite(Sprite s){
+		sprite = s;
+	}
 	public Sprite getSprite(){
 		return sprite;
 	}
