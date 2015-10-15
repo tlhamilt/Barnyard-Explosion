@@ -43,10 +43,10 @@ public class MyGame extends ApplicationAdapter {
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
 		//PlayerEntities now accept texture arrays
-		players.add(new PlayerEntity(100, 50, 32, 64, this,horseTextures, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP));
-		players.add(new PlayerEntity(150, 50, 32, 64, this, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W));
-		players.add(new PlayerEntity(200, 50, 32, 64, this, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I));
-		players.add(new PlayerEntity(370, 50, 32, 64, this, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T));
+		players.add(new PlayerEntity(100, 50, 32, 64, this,horseTextures, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN));
+		players.add(new PlayerEntity(150, 50, 32, 64, this, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W, Keys.S));
+		players.add(new PlayerEntity(200, 50, 32, 64, this, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I, Keys.K));
+		players.add(new PlayerEntity(370, 50, 32, 64, this, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T, Keys.G));
 		blocks.add(new StationaryEntity(50, 150, 64, 64, this, new Sprite(blockImg)));
 		blocks.add(new StationaryEntity(170, 100, 64, 64, this, new Sprite(blockImg)));
 		blocks.add(new StationaryEntity(290, 50, 64, 64, this, new Sprite(blockImg)));
@@ -57,28 +57,41 @@ public class MyGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 		for(PlayerEntity p : players){
-			if(keyboardListener.keysPressed[p.leftKey]){
+			if(keyboardListener.keysPressed[p.attackKey] && p.controlEnabled){
+				p.setCharacterState(2);
+				p.setXVelocity(0);
+				p.controlEnabled = false;
+			}
+			if(keyboardListener.keysPressed[p.leftKey] && p.controlEnabled){
 				p.setXVelocity(-2);
 				if(p.direction == 1){
 					p.direction = -1;
 					p.getSprite().flip(true, false);
 				}
 			}
-			if(keyboardListener.keysPressed[p.rightKey]){
+			if(keyboardListener.keysPressed[p.rightKey] && p.controlEnabled){
 				p.setXVelocity(2);
 				if(p.direction == -1){
 					p.direction = 1;
 					p.getSprite().flip(true, false);
 				}
 			}
-			if(!keyboardListener.keysPressed[p.leftKey] && !keyboardListener.keysPressed[p.rightKey]){
+			if(!keyboardListener.keysPressed[p.leftKey] && !keyboardListener.keysPressed[p.rightKey] && p.controlEnabled){
 				p.setXVelocity(0);
 				p.setCharacterState(0);
 			}
-			if(keyboardListener.keysPressed[p.jumpKey] && p.grounded){
+			if(keyboardListener.keysPressed[p.jumpKey] && p.grounded && p.controlEnabled){
 				p.setYVelocity(16);
 			}
 			p.move();
+			if(p.animationState == 2){
+				p.attackCounter -= 1;
+				if(p.attackCounter == 0){
+					p.setCharacterState(0);
+					p.controlEnabled = true;
+					p.attackCounter = p.attackTime;
+				}
+			}
 		}
 		
 		//Gdx.gl.glClearColor(.5f, 0.25f, .25f, 1);

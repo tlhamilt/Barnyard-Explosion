@@ -5,17 +5,21 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class PlayerEntity extends MovingEntity {
 	private int health;
-	public int upKey;
+	public int attackKey;
 	public int leftKey;
 	public int rightKey;
 	public int jumpKey;
 	public int direction;
 	private Texture[] characterAnimations;
 	private int animationCounter = 0;
-	private int animationState;
+	public int animationState;
+	public boolean controlEnabled;
+	public int attackTime = 10;
+	public int attackCounter = attackTime;
+	public int hurtTime = 10;
 	// variable for weapon eqquiped
 
-	public PlayerEntity(int xPos, int yPos, int width, int height, MyGame parent, Texture[] animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey){
+	public PlayerEntity(int xPos, int yPos, int width, int height, MyGame parent, Texture[] animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey, int attackKey){
 		super(xPos, yPos, width, height, parent, new Sprite(animations[0]), xVelocity, yVelocity);
 		health = 100;
 		characterAnimations = animations;
@@ -23,7 +27,9 @@ public class PlayerEntity extends MovingEntity {
 		this.leftKey = leftKey;
 		this.rightKey = rightKey;
 		this.jumpKey = jumpKey;
+		this.attackKey = attackKey;
 		direction = 1;
+		controlEnabled = true;
 	}
 	
 	// This controls the animation image of the characters
@@ -38,7 +44,7 @@ public class PlayerEntity extends MovingEntity {
 	
 	public void move(){
 		
-		if(animationCounter % 10 == 0 && grounded){//Temporary Walking Animation
+		if(animationCounter % 10 == 0 && grounded && controlEnabled){//Temporary Walking Animation
 			if(animationState == 0){			   //May need to change for added animations
 				setCharacterState(1);
 			}else{
@@ -85,7 +91,6 @@ public class PlayerEntity extends MovingEntity {
 		if(getXVelocity() != 0)//Walking Animation Timer
 		animationCounter++;
 	}
-	
 	public void die(){
 		// put code for death here
 	}
