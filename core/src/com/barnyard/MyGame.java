@@ -92,8 +92,9 @@ public class MyGame extends ApplicationAdapter {
 					p.attackCounter = p.attackTime;
 				}
 			}
+			System.out.println();
 		}
-		
+		System.out.println();
 		//Gdx.gl.glClearColor(.5f, 0.25f, .25f, 1);
 		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -116,17 +117,19 @@ public class MyGame extends ApplicationAdapter {
 		// and returns 4 if the player is colliding with the west side.
 		// determines if there is a collision
 		if(!e1.getHitBox().overlaps(e2.getHitBox())){
+			System.out.print("false ");
 			return 0;
 		}
+		System.out.print("true  ");
 		// for each possible side, a rectangle is generated containing all possible points that
 		// the player's position could be if they are colliding on that side
 		int x = e2.getXPos() - e1.getWidth();
 		int y = e2.getYPos() + (e2.getHeight() / 2) - (e1.getHeight() / 2);
 		int w = e1.getWidth() + e2.getWidth();
-		int h = (e2.getHeight() / 2) + (e1.getHeight() / 2);
+		int h = (e2.getHeight() / 2) + (e1.getHeight() / 2); // change here
 		Rectangle northRect = new Rectangle(x, y, w, h);
 		// if the created rectangle contains the player's position, the collision is on that side
-		if(northRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() - e1.getYVelocity() > e2.getYPos() + e2.getHeight() && e2.isTopOpen()){
+		if(northRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() - e1.getYVelocity() + 2 > e2.getYPos() + e2.getHeight() && e2.isTopOpen()){
 			return 1;																		// change here
 		}
 		y = e2.getYPos() - e1.getHeight();

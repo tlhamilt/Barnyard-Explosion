@@ -61,7 +61,7 @@ public class PlayerEntity extends MovingEntity {
 		{
 			int dir = parent.isColliding(this, b);
 			if(dir == 1){
-				setYPos(b.getYPos() + b.getHeight());
+				setYPos(b.getYPos() + b.getHeight() - 1);
 				setYVelocity(0);					// change here
 				grounded = true;
 			}
