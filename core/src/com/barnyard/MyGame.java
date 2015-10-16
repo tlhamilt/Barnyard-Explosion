@@ -43,13 +43,13 @@ public class MyGame extends ApplicationAdapter {
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
 		//PlayerEntities now accept texture arrays
-		players.add(new PlayerEntity(100, 50, 32, 64, this,horseTextures, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN));
-		players.add(new PlayerEntity(150, 50, 32, 64, this, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W, Keys.S));
-		players.add(new PlayerEntity(200, 50, 32, 64, this, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I, Keys.K));
-		players.add(new PlayerEntity(370, 50, 32, 64, this, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T, Keys.G));
-		blocks.add(new BlockEntity(50, 150, 64, 64, this, new Sprite(blockImg), true, true));
-		blocks.add(new BlockEntity(170, 100, 64, 64, this, new Sprite(blockImg), true, true));
-		blocks.add(new BlockEntity(290, 50, 64, 64, this, new Sprite(blockImg), true, false));
+		players.add(new PlayerEntity(10, 0, 32, 64, this,horseTextures, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN));
+		players.add(new PlayerEntity(42, 0, 32, 64, this, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W, Keys.S));
+		players.add(new PlayerEntity(74, 0, 32, 64, this, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I, Keys.K));
+		players.add(new PlayerEntity(106, 0, 32, 64, this, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T, Keys.G));
+		blocks.add(new BlockEntity(140, 32, 64, 64, this, new Sprite(blockImg), true, false));
+		blocks.add(new BlockEntity(140 + 64, 32, 64, 64, this, new Sprite(blockImg), true, false));
+		blocks.add(new BlockEntity(140 + (2 * 64), 32, 64, 64, this, new Sprite(blockImg), true, false));
 		sound = Gdx.audio.newSound(Gdx.files.internal("RiverValleyBreakdown.mp3"));
 		sound.loop();
 	}
@@ -127,7 +127,7 @@ public class MyGame extends ApplicationAdapter {
 		Rectangle northRect = new Rectangle(x, y, w, h);
 		// if the created rectangle contains the player's position, the collision is on that side
 		if(northRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() - e1.getYVelocity() > e2.getYPos() + e2.getHeight() && e2.isTopOpen()){
-			return 1;
+			return 1;																		// change here
 		}
 		y = e2.getYPos() - e1.getHeight();
 		h -= 1;
