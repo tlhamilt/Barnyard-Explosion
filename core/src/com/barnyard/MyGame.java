@@ -22,7 +22,7 @@ public class MyGame extends ApplicationAdapter {
 	Texture blockImg;
 	Listener keyboardListener;
 	ArrayList<PlayerEntity> players = new ArrayList<PlayerEntity>();
-	ArrayList<StationaryEntity> blocks = new ArrayList<StationaryEntity>();
+	ArrayList<BlockEntity> blocks = new ArrayList<BlockEntity>();
 	int gravity = 1;
 	Sound sound;
 	@Override
@@ -47,9 +47,9 @@ public class MyGame extends ApplicationAdapter {
 		players.add(new PlayerEntity(150, 50, 32, 64, this, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W, Keys.S));
 		players.add(new PlayerEntity(200, 50, 32, 64, this, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I, Keys.K));
 		players.add(new PlayerEntity(370, 50, 32, 64, this, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T, Keys.G));
-		blocks.add(new StationaryEntity(50, 150, 64, 64, this, new Sprite(blockImg)));
-		blocks.add(new StationaryEntity(170, 100, 64, 64, this, new Sprite(blockImg)));
-		blocks.add(new StationaryEntity(290, 50, 64, 64, this, new Sprite(blockImg)));
+		blocks.add(new BlockEntity(50, 150, 64, 64, this, new Sprite(blockImg), true, true));
+		blocks.add(new BlockEntity(170, 100, 64, 64, this, new Sprite(blockImg), true, true));
+		blocks.add(new BlockEntity(290, 50, 64, 64, this, new Sprite(blockImg), true, false));
 		sound = Gdx.audio.newSound(Gdx.files.internal("RiverValleyBreakdown.mp3"));
 		sound.loop();
 	}
@@ -106,7 +106,7 @@ public class MyGame extends ApplicationAdapter {
 		batch.end();
 		
 	}
-	int isColliding(MovingEntity e1, Entity e2){
+	int isColliding(MovingEntity e1, StationaryEntity e2){
 		// This method determines if a player and a block are colliding, and if so,
 		// which side the player is colliding with.
 		// The program returns 0 if there is no collision,
@@ -114,7 +114,6 @@ public class MyGame extends ApplicationAdapter {
 		// returns 2 if the player is colliding with the south side,
 		// returns 3 if the player is colliding with the east side,
 		// and returns 4 if the player is colliding with the west side.
-
 		// determines if there is a collision
 		if(!e1.getHitBox().overlaps(e2.getHitBox())){
 			return 0;
@@ -127,13 +126,13 @@ public class MyGame extends ApplicationAdapter {
 		int h = (e2.getHeight() / 2) + (e1.getHeight() / 2);
 		Rectangle northRect = new Rectangle(x, y, w, h);
 		// if the created rectangle contains the player's position, the collision is on that side
-		if(northRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() - e1.getYVelocity() > e2.getYPos() + e2.getHeight()){
+		if(northRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() - e1.getYVelocity() > e2.getYPos() + e2.getHeight() && e2.isTopOpen()){
 			return 1;
 		}
 		y = e2.getYPos() - e1.getHeight();
 		h -= 1;
 		Rectangle southRect = new Rectangle(x, y, w, h);
-		if(southRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() + e1.getHeight() - e1.getYVelocity() < e2.getYPos()){
+		if(southRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() + e1.getHeight() - e1.getYVelocity() < e2.getYPos() && e2.isBottomOpen()){
 			return 2;
 		}
 		x = e2.getXPos() + (e2.getWidth() / 2) - (e1.getWidth() / 2);

@@ -57,7 +57,7 @@ public class PlayerEntity extends MovingEntity {
 			setYVelocity(getYVelocity() - parent.gravity);
 		}
 		grounded = false;
-		for(StationaryEntity b : parent.blocks)
+		for(BlockEntity b : parent.blocks)
 		{
 			int dir = parent.isColliding(this, b);
 			if(dir == 1){
