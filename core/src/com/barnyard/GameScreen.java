@@ -117,7 +117,7 @@ public class GameScreen implements Screen{
 		for(PlayerEntity p : players){
 			game.batch.draw(p.getSprite(), p.getXPos(), p.getYPos());
 			if(p.animationState == 2){
-				batch.draw(p.attackSprite, p.attackX, p.attackY);
+				game.batch.draw(p.attackSprite, p.attackX, p.attackY);
 			}
 		}
 		for(StationaryEntity b : blocks)
