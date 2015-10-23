@@ -18,7 +18,7 @@ public class BarnyardExplosion extends Game {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         
-        this.setScreen(new GameScreen(this));
+        this.setScreen(new MainMenuScreen(this));
     }
 
     public void render() {

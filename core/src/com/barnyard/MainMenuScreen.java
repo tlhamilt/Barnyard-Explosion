@@ -22,26 +22,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.barnyard.*;
 
-public class MainMenu implements Screen{
+public class MainMenuScreen implements Screen{
 	Skin skin;
 	Stage stage;
     OrthographicCamera camera;
 
 	final BarnyardExplosion game;
-	public MainMenu(BarnyardExplosion barnyardExplosion) {
+	public MainMenuScreen(BarnyardExplosion barnyardExplosion) {
 		this.game = barnyardExplosion;
-		
-	}
-	public void create(){
-        stage = new Stage();
+		stage = new Stage();
         Gdx.input.setInputProcessor(stage);// Make the stage consume events
  
         createBasicSkin();
-        TextButton newGameButton = new TextButton("New game", skin); // Use the initialized skin
+        TextButton newGameButton = new TextButton("Click Anywhere to Start", skin); // Use the initialized skin
         newGameButton.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2);
         stage.addActor(newGameButton);
-                //game.setScreen(new GameScreen());
-	
+		
 	}
 	private void createBasicSkin(){
 		  //Create a font
@@ -74,8 +70,8 @@ public class MainMenu implements Screen{
             dispose();
         }
 
-        //stage.act();
-        //stage.draw();
+        stage.act();
+        stage.draw();
     }
 	@Override
 	public void show() {

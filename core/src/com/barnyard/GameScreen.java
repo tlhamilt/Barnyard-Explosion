@@ -15,15 +15,13 @@ import com.badlogic.gdx.math.Rectangle;
 
 
 public class GameScreen implements Screen{
-	SpriteBatch batch;
-	Texture[] horseTextures; //We should probably store character data in an excel file
-	Texture[] cowTextures;   //and parse the data from it based on character selection
-	Texture[] pigTextures;
-	Texture[] chickenTextures;
+	private Texture[] horseTextures; //We should probably store character data in an excel file
+	private Texture[] cowTextures;   //and parse the data from it based on character selection
+	private Texture[] pigTextures;
+	private Texture[] chickenTextures;
 	
 	private BarnyardExplosion game;
     OrthographicCamera camera;
-	Sprite chickenSprite;
 	Texture blockImg;
 	public Texture punchImg;
 	Sprite punchSprite;
@@ -58,6 +56,7 @@ public class GameScreen implements Screen{
 		blocks.add(new BlockEntity(140 + (2 * 64), 32, 64, 64, this, new Sprite(blockImg), true, false));
 		sound = Gdx.audio.newSound(Gdx.files.internal("RiverValleyBreakdown.mp3"));
 		sound.loop();
+		
 	}
 
 	public void render (float delta) {
@@ -203,8 +202,20 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
+		game.dispose();
+		sound.dispose();
+		for(Texture current:horseTextures){
+			current.dispose();
+		}
+		for(Texture current:pigTextures){
+			current.dispose();
+		}
+		for(Texture current:cowTextures){
+			current.dispose();
+		}
+		for(Texture current:chickenTextures){
+			current.dispose();
+		}
 	}
 
 	
