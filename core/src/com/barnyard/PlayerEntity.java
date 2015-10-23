@@ -22,7 +22,7 @@ public class PlayerEntity extends MovingEntity {
 	public Sprite attackSprite;
 	// variable for weapon eqquiped
 
-	public PlayerEntity(int xPos, int yPos, int width, int height, MyGame parent, Texture[] animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey, int attackKey){
+	public PlayerEntity(int xPos, int yPos, int width, int height, GameScreen parent, Texture[] animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey, int attackKey){
 		super(xPos, yPos, width, height, parent, new Sprite(animations[0]), xVelocity, yVelocity);
 		health = 100;
 		characterAnimations = animations;

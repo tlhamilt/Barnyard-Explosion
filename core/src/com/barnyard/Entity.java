@@ -10,9 +10,9 @@ public abstract class Entity {
 	private int height;
 	private Rectangle hitBox;
 	private Sprite sprite;
-	public MyGame parent;
+	public GameScreen parent;
 	
-	public Entity(int xPos, int yPos, int width, int height, MyGame parent, Sprite sprite){
+	public Entity(int xPos, int yPos, int width, int height, GameScreen parent, Sprite sprite){
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.width = width;

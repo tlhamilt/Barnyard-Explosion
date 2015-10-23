@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,6 +25,13 @@ import com.barnyard.*;
 public class MainMenu implements Screen{
 	Skin skin;
 	Stage stage;
+    OrthographicCamera camera;
+
+	final BarnyardExplosion game;
+	public MainMenu(BarnyardExplosion barnyardExplosion) {
+		this.game = barnyardExplosion;
+		
+	}
 	public void create(){
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);// Make the stage consume events
@@ -32,6 +40,7 @@ public class MainMenu implements Screen{
         TextButton newGameButton = new TextButton("New game", skin); // Use the initialized skin
         newGameButton.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2);
         stage.addActor(newGameButton);
+                //game.setScreen(new GameScreen());
 	
 	}
 	private void createBasicSkin(){
@@ -59,8 +68,14 @@ public class MainMenu implements Screen{
 	public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act();
-        stage.draw();
+        
+        if (Gdx.input.isTouched()) {
+            game.setScreen(new GameScreen(game));
+            dispose();
+        }
+
+        //stage.act();
+        //stage.draw();
     }
 	@Override
 	public void show() {
