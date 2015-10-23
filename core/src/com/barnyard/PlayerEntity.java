@@ -34,7 +34,7 @@ public class PlayerEntity extends MovingEntity {
 		direction = 1;
 		controlEnabled = true;
 		attackSprite = new Sprite(parent.punchImg);
-		attackY = getYPos() + (getHeight() / 2) - 4;
+		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2) + 2;
 		attackX = getXPos() + getWidth();
 	}
 	
@@ -59,7 +59,6 @@ public class PlayerEntity extends MovingEntity {
 		}
 
 		setXPos(getXPos() + getXVelocity());
-		attackX += getXVelocity();
 		if(getYVelocity() > -10){
 			setYVelocity(getYVelocity() - parent.gravity);
 		}
@@ -89,12 +88,18 @@ public class PlayerEntity extends MovingEntity {
 		{
 			setYPos(getYPos() + getYVelocity());
 		}
-		attackY = getYPos() + (getHeight() / 2) - 4;
 		if(getYPos() < 0){
 			setYPos(0);
 			setYVelocity(0);
 			grounded = true;
 		}
+		if(direction == 1){
+			attackX = getXPos() + getWidth();
+		}
+		else{
+			attackX = getXPos() - (int)attackSprite.getWidth();
+		}
+		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2) + 2;
 		if(getXVelocity() != 0)//Walking Animation Timer
 		animationCounter++;
 	}
