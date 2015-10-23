@@ -14,9 +14,12 @@ public class PlayerEntity extends MovingEntity {
 	private int animationCounter = 0;
 	public int animationState;
 	public boolean controlEnabled;
-	public int attackTime = 10;
+	public int attackTime = 15;
 	public int attackCounter = attackTime;
 	public int hurtTime = 10;
+	public int attackX;
+	public int attackY;
+	public Sprite attackSprite;
 	// variable for weapon eqquiped
 
 	public PlayerEntity(int xPos, int yPos, int width, int height, MyGame parent, Texture[] animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey, int attackKey){
@@ -30,6 +33,9 @@ public class PlayerEntity extends MovingEntity {
 		this.attackKey = attackKey;
 		direction = 1;
 		controlEnabled = true;
+		attackSprite = new Sprite(parent.punchImg);
+		attackY = getYPos() + (getHeight() / 2) - 4;
+		attackX = getXPos() + getWidth();
 	}
 	
 	// This controls the animation image of the characters
@@ -53,6 +59,7 @@ public class PlayerEntity extends MovingEntity {
 		}
 
 		setXPos(getXPos() + getXVelocity());
+		attackX += getXVelocity();
 		if(getYVelocity() > -10){
 			setYVelocity(getYVelocity() - parent.gravity);
 		}
@@ -82,7 +89,7 @@ public class PlayerEntity extends MovingEntity {
 		{
 			setYPos(getYPos() + getYVelocity());
 		}
-		
+		attackY = getYPos() + (getHeight() / 2) - 4;
 		if(getYPos() < 0){
 			setYPos(0);
 			setYVelocity(0);

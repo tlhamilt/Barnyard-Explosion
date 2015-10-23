@@ -20,6 +20,8 @@ public class MyGame extends ApplicationAdapter {
 
 	Sprite chickenSprite;
 	Texture blockImg;
+	public Texture punchImg;
+	Sprite punchSprite;
 	Listener keyboardListener;
 	ArrayList<PlayerEntity> players = new ArrayList<PlayerEntity>();
 	ArrayList<BlockEntity> blocks = new ArrayList<BlockEntity>();
@@ -38,7 +40,7 @@ public class MyGame extends ApplicationAdapter {
 		chickenTextures = new Texture[]{new Texture("ChickenStanding.png"),new Texture("ChickenWalking.png"),new Texture("ChickenPunching.png")};
 
 		blockImg = new Texture("GroundMiddle.png");
-		
+		punchImg = new Texture("PunchEffect.png");
 		
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
@@ -67,6 +69,8 @@ public class MyGame extends ApplicationAdapter {
 				if(p.direction == 1){
 					p.direction = -1;
 					p.getSprite().flip(true, false);
+					p.attackX = p.getXPos() - (int)p.attackSprite.getWidth();
+					p.attackSprite.flip(true, false);
 				}
 			}
 			if(keyboardListener.keysPressed[p.rightKey] && p.controlEnabled){
@@ -74,6 +78,8 @@ public class MyGame extends ApplicationAdapter {
 				if(p.direction == -1){
 					p.direction = 1;
 					p.getSprite().flip(true, false);
+					p.attackX = p.getXPos() + p.getWidth();
+					p.attackSprite.flip(true, false);
 				}
 			}
 			if(!keyboardListener.keysPressed[p.leftKey] && !keyboardListener.keysPressed[p.rightKey] && p.controlEnabled){
@@ -82,6 +88,7 @@ public class MyGame extends ApplicationAdapter {
 			}
 			if(keyboardListener.keysPressed[p.jumpKey] && p.grounded && p.controlEnabled){
 				p.setYVelocity(16);
+				p.setYPos(p.getYPos() + 1);
 			}
 			p.move();
 			if(p.animationState == 2){
@@ -92,15 +99,16 @@ public class MyGame extends ApplicationAdapter {
 					p.attackCounter = p.attackTime;
 				}
 			}
-			System.out.println();
 		}
-		System.out.println();
 		//Gdx.gl.glClearColor(.5f, 0.25f, .25f, 1);
 		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		for(PlayerEntity p : players){
 			batch.draw(p.getSprite(), p.getXPos(), p.getYPos());
+			if(p.animationState == 2){
+				batch.draw(p.attackSprite, p.attackX, p.attackY);
+			}
 		}
 		for(StationaryEntity b : blocks)
 		batch.draw(b.getSprite(), b.getXPos(), b.getYPos());
@@ -117,10 +125,8 @@ public class MyGame extends ApplicationAdapter {
 		// and returns 4 if the player is colliding with the west side.
 		// determines if there is a collision
 		if(!e1.getHitBox().overlaps(e2.getHitBox())){
-			System.out.print("false ");
 			return 0;
 		}
-		System.out.print("true  ");
 		// for each possible side, a rectangle is generated containing all possible points that
 		// the player's position could be if they are colliding on that side
 		int x = e2.getXPos() - e1.getWidth();
