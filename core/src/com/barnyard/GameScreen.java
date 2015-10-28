@@ -60,6 +60,11 @@ public class GameScreen implements Screen{
 	}
 
 	public void render (float delta) {
+		//delta is the equivalent of using gdx.graphics.getDeltaTime()
+		//we should use this since it is implemented into the render method
+		//System.out.println(Gdx.graphics.getDeltaTime());
+		//System.out.println(delta);
+
 		//Gdx.graphics.getDeltaTime();
 		for(PlayerEntity p : players){
 			if(keyboardListener.keysPressed[p.attackKey] && p.controlEnabled){
@@ -103,7 +108,6 @@ public class GameScreen implements Screen{
 				}
 			}
 		}
-		//Gdx.gl.glClearColor(.5f, 0.25f, .25f, 1);
 		Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -120,7 +124,8 @@ public class GameScreen implements Screen{
 			}
 		}
 		for(StationaryEntity b : blocks)
-		game.batch.draw(b.getSprite(), b.getXPos(), b.getYPos());
+			game.batch.draw(b.getSprite(), b.getXPos(), b.getYPos());
+		
 		game.batch.end();
 		
 	}
@@ -202,6 +207,7 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void dispose() {
+		//This method starts cleaning up the system resources
 		game.dispose();
 		sound.dispose();
 		for(Texture current:horseTextures){
