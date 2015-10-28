@@ -1,28 +1,20 @@
 package com.barnyard;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.barnyard.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class MainMenuScreen implements Screen{
+public class MainMenuScreen extends ClickListener implements Screen{
 	Skin skin;
 	Stage stage;
     OrthographicCamera camera;
@@ -31,13 +23,31 @@ public class MainMenuScreen implements Screen{
 	public MainMenuScreen(BarnyardExplosion barnyardExplosion) {
 		this.game = barnyardExplosion;
 		stage = new Stage();
-        Gdx.input.setInputProcessor(stage);// Make the stage consume events
+		ClickListener handler = this;
+        Gdx.input.setInputProcessor(stage);
  
         createBasicSkin();
-        TextButton newGameButton = new TextButton("Click Anywhere to Start", skin); // Use the initialized skin
-        newGameButton.setPosition(Gdx.graphics.getWidth()/2 - Gdx.graphics.getWidth()/8 , Gdx.graphics.getHeight()/2);
-        stage.addActor(newGameButton);
-		
+        TextButton startButton = new TextButton("New Game", skin);
+        TextButton optionsButton = new TextButton("Options", skin);
+        TextButton creditsButton = new TextButton("Credits", skin); 
+
+        startButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8 , Gdx.graphics.getHeight() / 2 + 90);
+        optionsButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8 , Gdx.graphics.getHeight() / 2 + 10);
+        creditsButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8 , Gdx.graphics.getHeight() / 2 - 70);
+
+        startButton.setName("Start");
+        optionsButton.setName("Options");
+        creditsButton.setName("Credits");
+
+        
+        stage.addActor(startButton);
+        stage.addActor(optionsButton);
+        stage.addActor(creditsButton);
+
+        startButton.addListener(handler); 
+        optionsButton.addListener(handler); 
+        creditsButton.addListener(handler); 
+
 	}
 	private void createBasicSkin(){
 		  //Create a font
@@ -65,13 +75,24 @@ public class MainMenuScreen implements Screen{
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
-        if (Gdx.input.isTouched()) {
-            game.setScreen(new GameScreen(game));
-            dispose();
-        }
+       
 
         stage.act();
         stage.draw();
+    }
+    public void clicked(InputEvent event, float x, float y) {
+    	if(event.getListenerActor().getName() == "Start"){
+	          game.setScreen(new GameScreen(game));
+	          dispose();
+		 }else if(event.getListenerActor().getName() == "Options"){
+			 System.out.println("Options");
+			 dispose();
+		 }else if(event.getListenerActor().getName() == "Credits"){
+			 System.out.println("Credits");
+			 dispose();
+		 }else{
+			 System.err.println("Error: Unassigned Button Selected");
+		 }
     }
 	@Override
 	public void show() {
@@ -103,6 +124,7 @@ public class MainMenuScreen implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
+	
 	
 	
 }
