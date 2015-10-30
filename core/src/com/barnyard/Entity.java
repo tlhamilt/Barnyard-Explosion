@@ -21,6 +21,14 @@ public abstract class Entity {
 		this.sprite = sprite;
 		hitBox = new Rectangle(xPos, yPos, width, height);
 	}
+	public Entity(int xPos, int yPos, int width, int height, Sprite sprite){
+		this.xPos = xPos;
+		this.yPos = yPos;
+		this.width = width;
+		this.height = height;
+		this.sprite = sprite;
+		hitBox = new Rectangle(xPos, yPos, width, height);
+	}
 	
 	public int getXPos(){
 		return xPos;

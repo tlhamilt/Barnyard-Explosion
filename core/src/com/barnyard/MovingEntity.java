@@ -12,6 +12,11 @@ public abstract class MovingEntity extends Entity {
 		this.xVelocity = xVelocity;
 		this.yVelocity = yVelocity;
 	}
+	public MovingEntity(int xPos, int yPos, int width, int height, Sprite sprite, int xVelocity, int yVelocity){
+		super(xPos, yPos, width, height, sprite);
+		this.xVelocity = xVelocity;
+		this.yVelocity = yVelocity;
+	}
 	
 	public int getXVelocity(){
 		return xVelocity;
