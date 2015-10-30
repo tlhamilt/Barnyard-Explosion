@@ -14,7 +14,8 @@ public class PlayerEntity extends MovingEntity {
 	private int animationCounter = 0;
 	public int animationState;
 	public boolean controlEnabled;
-	public int attackTime = 15;
+	public boolean attackEnabled;
+	public int attackTime = 20;
 	public int attackCounter = attackTime;
 	public int hurtTime = 10;
 	public int attackX;
@@ -33,6 +34,7 @@ public class PlayerEntity extends MovingEntity {
 		this.attackKey = attackKey;
 		direction = 1;
 		controlEnabled = true;
+		attackEnabled = true;
 		attackSprite = new Sprite(parent.punchImg);
 		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2) + 2;
 		attackX = getXPos() + getWidth();

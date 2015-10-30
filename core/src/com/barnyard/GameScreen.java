@@ -51,9 +51,10 @@ public class GameScreen implements Screen{
 		players.add(new PlayerEntity(42, 0, 32, 64, this, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W, Keys.S));
 		players.add(new PlayerEntity(74, 0, 32, 64, this, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I, Keys.K));
 		players.add(new PlayerEntity(106, 0, 32, 64, this, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T, Keys.G));
-		blocks.add(new BlockEntity(140, 32, 64, 64, this, new Sprite(blockImg), true, false));
-		blocks.add(new BlockEntity(140 + 64, 32, 64, 64, this, new Sprite(blockImg), true, false));
-		blocks.add(new BlockEntity(140 + (2 * 64), 32, 64, 64, this, new Sprite(blockImg), true, false));
+		//blocks.add(new BlockEntity(268, 0, 64, 64, this, new Sprite(blockImg), false, false));
+		blocks.add(new BlockEntity(268, 64, 64, 64, this, new Sprite(blockImg), true, true));
+		//blocks.add(new BlockEntity(268, 2 * 64, 64, 64, this, new Sprite(blockImg), true, false));
+		blocks.add(new BlockEntity(268 - 64, 0, 64, 64, this, new Sprite(blockImg), true, false));
 		sound = Gdx.audio.newSound(Gdx.files.internal("RiverValleyBreakdown.mp3"));
 		sound.loop();
 		
@@ -67,10 +68,16 @@ public class GameScreen implements Screen{
 
 		//Gdx.graphics.getDeltaTime();
 		for(PlayerEntity p : players){
-			if(keyboardListener.keysPressed[p.attackKey] && p.controlEnabled){
+			if(keyboardListener.keysPressed[p.attackKey] && p.controlEnabled & p.attackEnabled){
 				p.setCharacterState(2);
-				p.setXVelocity(0);
+				if(p.grounded){
+					p.setXVelocity(0);
+				}
 				p.controlEnabled = false;
+				p.attackEnabled = false;
+			}
+			if(!keyboardListener.keysPressed[p.attackKey]){
+				p.attackEnabled = true;
 			}
 			if(keyboardListener.keysPressed[p.leftKey] && p.controlEnabled){
 				p.setXVelocity(-2);
@@ -100,6 +107,9 @@ public class GameScreen implements Screen{
 			}
 			p.move();
 			if(p.animationState == 2){
+				if(p.grounded){
+					p.setXVelocity(0);
+				}
 				p.attackCounter -= 1;
 				if(p.attackCounter == 0){
 					p.setCharacterState(0);
