@@ -23,7 +23,6 @@ public class MainMenuScreen extends ClickListener implements Screen{
 	public MainMenuScreen(BarnyardExplosion barnyardExplosion) {
 		this.game = barnyardExplosion;
 		stage = new Stage();
-		ClickListener handler = this;
         Gdx.input.setInputProcessor(stage);
  
         createBasicSkin();
@@ -44,9 +43,9 @@ public class MainMenuScreen extends ClickListener implements Screen{
         stage.addActor(optionsButton);
         stage.addActor(creditsButton);
 
-        startButton.addListener(handler); 
-        optionsButton.addListener(handler); 
-        creditsButton.addListener(handler); 
+        startButton.addListener(this); 
+        optionsButton.addListener(this); 
+        creditsButton.addListener(this); 
 
 	}
 	private void createBasicSkin(){
