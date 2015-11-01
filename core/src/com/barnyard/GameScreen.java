@@ -47,14 +47,12 @@ public class GameScreen implements Screen{
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
 		//PlayerEntities now accept texture arrays
-		players.add(new PlayerEntity(10, 0, 32, 64, this,horseTextures, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN));
-		players.add(new PlayerEntity(42, 0, 32, 64, this, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W, Keys.S));
-		players.add(new PlayerEntity(74, 0, 32, 64, this, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I, Keys.K));
-		players.add(new PlayerEntity(106, 0, 32, 64, this, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T, Keys.G));
+		players.add(new PlayerEntity(10, 0, 32, 64, game,horseTextures, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN));
+		players.add(new PlayerEntity(42, 0, 32, 64, game, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W, Keys.S));
+		players.add(new PlayerEntity(74, 0, 32, 64, game, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I, Keys.K));
+		players.add(new PlayerEntity(106, 0, 32, 64, game, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T, Keys.G));
 		//blocks.add(new BlockEntity(268, 0, 64, 64, this, new Sprite(blockImg), false, false));
-		blocks.add(new BlockEntity(268, 64, 64, 64, this, new Sprite(blockImg), true, true));
-		//blocks.add(new BlockEntity(268, 2 * 64, 64, 64, this, new Sprite(blockImg), true, false));
-		blocks.add(new BlockEntity(268 - 64, 0, 64, 64, this, new Sprite(blockImg), true, false));
+		
 		sound = Gdx.audio.newSound(Gdx.files.internal("RiverValleyBreakdown.mp3"));
 		sound.loop();
 		
@@ -67,19 +65,42 @@ public class GameScreen implements Screen{
 		//System.out.println(delta);
 
 		//Gdx.graphics.getDeltaTime();
+		//Gdx.gl.glClearColor(0, 1, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		
+        camera.update();
+        
+        game.batch.setProjectionMatrix(camera.combined);
+
+		game.batch.begin();
+		game.currentLevel.drawLevel();		
+		controller();
+
+//		for(PlayerEntity p : players){
+//			game.batch.draw(p.getSprite(), p.getXPos(), p.getYPos());
+//			if(p.animationState == 2){
+//				game.batch.draw(p.attackSprite, p.attackX, p.attackY);
+//			}
+//		}
+		game.batch.end();
+		
+	}
+	
+	public void controller(){
 		for(PlayerEntity p : players){
-			if(keyboardListener.keysPressed[p.attackKey] && p.controlEnabled & p.attackEnabled){
-				p.setCharacterState(2);
-				if(p.grounded){
-					p.setXVelocity(0);
-				}
-				p.controlEnabled = false;
-				p.attackEnabled = false;
-			}
+//			if(keyboardListener.keysPressed[p.attackKey] && p.controlEnabled & p.attackEnabled){ //Attack
+//				p.setCharacterState(2);
+//				if(p.grounded){
+//					p.setXVelocity(0);
+//				}
+//				p.controlEnabled = false;
+//				p.attackEnabled = false;
+//			}
 			if(!keyboardListener.keysPressed[p.attackKey]){
 				p.attackEnabled = true;
 			}
-			if(keyboardListener.keysPressed[p.leftKey] && p.controlEnabled){
+			if(keyboardListener.keysPressed[p.leftKey] && p.controlEnabled){ // move left
 				p.setXVelocity(-2);
 				if(p.direction == 1){
 					p.direction = -1;
@@ -88,7 +109,7 @@ public class GameScreen implements Screen{
 					p.attackSprite.flip(true, false);
 				}
 			}
-			if(keyboardListener.keysPressed[p.rightKey] && p.controlEnabled){
+			if(keyboardListener.keysPressed[p.rightKey] && p.controlEnabled){ //move right
 				p.setXVelocity(2);
 				if(p.direction == -1){
 					p.direction = 1;
@@ -118,71 +139,9 @@ public class GameScreen implements Screen{
 				}
 			}
 		}
-		Gdx.gl.glClearColor(0, 1, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-        camera.update();
-        
-        game.batch.setProjectionMatrix(camera.combined);
-
-		game.batch.begin();
-		for(PlayerEntity p : players){
-			game.batch.draw(p.getSprite(), p.getXPos(), p.getYPos());
-			if(p.animationState == 2){
-				game.batch.draw(p.attackSprite, p.attackX, p.attackY);
-			}
-		}
-		for(StationaryEntity b : blocks)
-			game.batch.draw(b.getSprite(), b.getXPos(), b.getYPos());
-		
-		game.batch.end();
-		
 	}
-	int isColliding(MovingEntity e1, StationaryEntity e2){
-		// This method determines if a player and a block are colliding, and if so,
-		// which side the player is colliding with.
-		// The program returns 0 if there is no collision,
-		// returns 1 if the player is colliding with the north side,
-		// returns 2 if the player is colliding with the south side,
-		// returns 3 if the player is colliding with the east side,
-		// and returns 4 if the player is colliding with the west side.
-		// determines if there is a collision
-		if(!e1.getHitBox().overlaps(e2.getHitBox())){
-			return 0;
-		}
-		// for each possible side, a rectangle is generated containing all possible points that
-		// the player's position could be if they are colliding on that side
-		int x = e2.getXPos() - e1.getWidth();
-		int y = e2.getYPos() + (e2.getHeight() / 2) - (e1.getHeight() / 2);
-		int w = e1.getWidth() + e2.getWidth();
-		int h = (e2.getHeight() / 2) + (e1.getHeight() / 2); // change here
-		Rectangle northRect = new Rectangle(x, y, w, h);
-		// if the created rectangle contains the player's position, the collision is on that side
-		if(northRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() - e1.getYVelocity() + 2 > e2.getYPos() + e2.getHeight() && e2.isTopOpen()){
-			return 1;																		// change here
-		}
-		y = e2.getYPos() - e1.getHeight();
-		h -= 1;
-		Rectangle southRect = new Rectangle(x, y, w, h);
-		if(southRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() + e1.getHeight() - e1.getYVelocity() < e2.getYPos() && e2.isBottomOpen()){
-			return 2;
-		}
-		x = e2.getXPos() + (e2.getWidth() / 2) - (e1.getWidth() / 2);
-		y = e2.getYPos() - e1.getHeight();
-		w = (e2.getWidth() / 2) + (e1.getWidth() / 2);
-		h = e1.getHeight() + e2.getHeight();
-		Rectangle eastRect = new Rectangle(x, y, w, h);
-		if(eastRect.contains(e1.getXPos(), e1.getYPos())){
-			return 3;
-		}
-		x = e2.getXPos() - e1.getWidth();
-		w -= 1;
-		Rectangle westRect = new Rectangle(x, y, w, h);
-		if(westRect.contains(e1.getXPos(), e1.getYPos())){
-			return 4;
-		}
-		return 0;
-	}
+	
+	
 
 	@Override
 	public void show() {

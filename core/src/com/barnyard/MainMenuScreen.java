@@ -79,7 +79,7 @@ public class MainMenuScreen extends ClickListener implements Screen{
     public void clicked(InputEvent event, float x, float y) {
     	if(event.getListenerActor().getName() == "Start"){
     		dispose();
-	          game.setScreen(new GameScreen(game));
+	        game.setScreen(new GameOptionsScreen(game));
 	          
 		 }else if(event.getListenerActor().getName() == "Options"){
 			 System.out.println("Options");

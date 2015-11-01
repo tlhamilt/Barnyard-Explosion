@@ -23,8 +23,8 @@ public class TestPlayer extends MovingEntity {
 	public Sprite attackSprite;
 	// variable for weapon eqquiped
 
-	public TestPlayer(int xPos, int yPos, int width, int height, Texture[] animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey, int attackKey){
-		super(xPos, yPos, width, height, new Sprite(animations[0]), xVelocity, yVelocity);
+	public TestPlayer(int xPos, int yPos, int width, int height,BarnyardExplosion game, Texture[] animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey, int attackKey){
+		super(xPos, yPos, width, height,game, new Sprite(animations[0]), xVelocity, yVelocity);
 		health = 100;
 		characterAnimations = animations;
 		animationState = 0;

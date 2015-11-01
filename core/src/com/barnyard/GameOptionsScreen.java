@@ -2,6 +2,7 @@ package com.barnyard;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -37,6 +38,13 @@ public class GameOptionsScreen implements InputProcessor, Screen {
         for (int i = 0; i < characterCount; i++){
 			characters[i].setPosition(32 * i + (400 - (characterCount - i) * 32), 320);
 		}
+        ArrayList<BlockEntity> blocks = new ArrayList<BlockEntity>();
+        blocks.add(new BlockEntity(268, 64, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, true));
+		//blocks.add(new BlockEntity(268, 2 * 64, 64, 64, this, new Sprite(blockImg), true, false));
+		blocks.add(new BlockEntity(268 - 64, 0, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
+        LevelEntity level = new LevelEntity(new Texture("background.png"),blocks,game);
+        game.currentLevel = level;
+        
 	}
 	
 @Override
@@ -56,6 +64,7 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 		for (int i = 0; i < characterCount; i++){
 			game.batch.draw(characters[i], 32 * i + (400 - (characterCount - i) * 32) , 320);
 		}
+		game.batch.draw(new Texture("Block.png"), 760, 0);
 		for(TestPlayer e:game.players){
 			e.move();
 			game.batch.draw(e.getSprite(), e.getXPos(), e.getYPos());
@@ -69,9 +78,12 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 		for(Sprite current : characters){
 
 			if(current.getBoundingRectangle().contains(screenX,480-screenY)){
-				TestPlayer newGuy = new TestPlayer((int)current.getX(),(int)current.getY(),0,0,new Texture[]{current.getTexture(),current.getTexture()},0,0,0,0,0,0);
+				TestPlayer newGuy = new TestPlayer((int)current.getX(),(int)current.getY(),0,0,game,new Texture[]{current.getTexture(),current.getTexture()},0,0,0,0,0,0);
 				game.players.add(newGuy);
 			}
+		}
+		if(screenX > 760 && screenY > 440){
+			game.setScreen(new GameScreen(game));
 		}
 		return false;
 	}

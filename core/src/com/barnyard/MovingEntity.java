@@ -6,14 +6,9 @@ public abstract class MovingEntity extends Entity {
 	private int xVelocity;
 	private int yVelocity;
 	public boolean grounded = false;
-	
-	public MovingEntity(int xPos, int yPos, int width, int height, GameScreen parent, Sprite sprite, int xVelocity, int yVelocity){
-		super(xPos, yPos, width, height, parent, sprite);
-		this.xVelocity = xVelocity;
-		this.yVelocity = yVelocity;
-	}
-	public MovingEntity(int xPos, int yPos, int width, int height, Sprite sprite, int xVelocity, int yVelocity){
-		super(xPos, yPos, width, height, sprite);
+
+	public MovingEntity(int xPos, int yPos, int width, int height,BarnyardExplosion game, Sprite sprite, int xVelocity, int yVelocity){
+		super(xPos, yPos, width, height, game, sprite);
 		this.xVelocity = xVelocity;
 		this.yVelocity = yVelocity;
 	}

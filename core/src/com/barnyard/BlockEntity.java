@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class BlockEntity extends StationaryEntity{
 	
-	public BlockEntity(int xPos, int yPos, int width, int height, GameScreen parent, Sprite sprite, boolean topOpen, boolean bottomOpen) {
-		super(xPos, yPos, width, height, parent, sprite, topOpen, bottomOpen);
+	public BlockEntity(int xPos, int yPos, int width, int height, BarnyardExplosion game, Sprite sprite, boolean topOpen, boolean bottomOpen) {
+		super(xPos - 1, yPos - 1, width , height + 1, game, sprite, topOpen, bottomOpen);
 	}
 }
