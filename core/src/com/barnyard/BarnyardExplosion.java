@@ -12,10 +12,10 @@ public class BarnyardExplosion extends Game {
     public SpriteBatch batch;
     public BitmapFont font;
     OrthographicCamera camera;
-    ArrayList<TestPlayer> players = new ArrayList<TestPlayer>();
+    ArrayList<PlayerEntity> players = new ArrayList<PlayerEntity>();
     ArrayList<BlockEntity> blocks = new ArrayList<BlockEntity>();
 
-    LevelEntity currentLevel;
+    LevelEntity currentLevel = new LevelEntity();
 
     public void create() {
         batch = new SpriteBatch();

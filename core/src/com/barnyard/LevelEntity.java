@@ -13,16 +13,17 @@ public class LevelEntity {
 	
 	public LevelEntity(Texture backImg,ArrayList<BlockEntity> blocks, BarnyardExplosion game){
 		background = new Sprite(backImg);
-		this.blocks = blocks;
-		//background.setTexture(backImg);
-		
+		this.blocks = blocks;		
 		this.game = game;
 	}
 	public LevelEntity(Texture backImg, int gravity, ArrayList<BlockEntity> blocks, BarnyardExplosion game){
+		background = new Sprite(backImg);
 		this.blocks = blocks;
-		background.setTexture(backImg);
 		this.game = game;
 	}
+	public LevelEntity(){
+	}
+	
 	public void drawLevel(){
 		game.batch.draw(background,0,0);
 		for(BlockEntity b : blocks){

@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -25,10 +26,13 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 	private Sprite[] characters = new Sprite[]{new Sprite(new Texture("HorseStanding.png")),
 			new Sprite(new Texture("CowStanding.png")),new Sprite(new Texture("ChickenStanding.png")),
 			new Sprite(new Texture("PigStanding.png"))};
+	
 	private final int characterCount = characters.length;
     OrthographicCamera camera;
     Listener mListener;
     GameScreen test;
+    int [][] controls = {{Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN},{Keys.A, Keys.D, Keys.W, Keys.S},{Keys.J, Keys.L, Keys.I, Keys.K},{Keys.F, Keys.H, Keys.T, Keys.G}};
+    
 
 	public GameOptionsScreen(BarnyardExplosion game){
 		this.game = game;
@@ -40,14 +44,14 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 		}
         ArrayList<BlockEntity> blocks = new ArrayList<BlockEntity>();
         blocks.add(new BlockEntity(268, 64, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, true));
-		//blocks.add(new BlockEntity(268, 2 * 64, 64, 64, this, new Sprite(blockImg), true, false));
+		//blocks.add(new BlockEntity(268, 2 * 64, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
 		blocks.add(new BlockEntity(268 - 64, 0, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
         LevelEntity level = new LevelEntity(new Texture("background.png"),blocks,game);
         game.currentLevel = level;
         
 	}
 	
-@Override
+	@Override
 	public void show() {
 		
 	}
@@ -64,22 +68,25 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 		for (int i = 0; i < characterCount; i++){
 			game.batch.draw(characters[i], 32 * i + (400 - (characterCount - i) * 32) , 320);
 		}
-		game.batch.draw(new Texture("Block.png"), 760, 0);
-		for(TestPlayer e:game.players){
+		game.batch.draw(new Texture("block.png"), 760, 0);
+		for(PlayerEntity e : game.players){
 			e.move();
-			game.batch.draw(e.getSprite(), e.getXPos(), e.getYPos());
-
+			if(e.getXPos() >= 800 - (playerCount * 20)){
+				e.setXVelocity(0);
+			}
 		}
 		game.batch.end();
 	}
 	
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		for(Sprite current : characters){
-
-			if(current.getBoundingRectangle().contains(screenX,480-screenY)){
-				TestPlayer newGuy = new TestPlayer((int)current.getX(),(int)current.getY(),0,0,game,new Texture[]{current.getTexture(),current.getTexture()},0,0,0,0,0,0);
-				game.players.add(newGuy);
+		if(playerCount < 4){
+			for(Sprite current : characters){
+				if(current.getBoundingRectangle().contains(screenX,480-screenY)){
+					PlayerEntity newGuy = new PlayerEntity((int)current.getX(),(int)current.getY(),32,64,game,new Texture[]{current.getTexture(),current.getTexture()},0,0,controls[playerCount][0],controls[playerCount][1],controls[playerCount][2],controls[playerCount][3]);
+					game.players.add(newGuy);
+					playerCount++;
+				}
 			}
 		}
 		if(screenX > 760 && screenY > 440){
