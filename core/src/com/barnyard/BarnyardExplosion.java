@@ -1,4 +1,6 @@
 package com.barnyard;
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -10,6 +12,10 @@ public class BarnyardExplosion extends Game {
     public SpriteBatch batch;
     public BitmapFont font;
     OrthographicCamera camera;
+    ArrayList<PlayerEntity> players = new ArrayList<PlayerEntity>();
+    ArrayList<BlockEntity> blocks = new ArrayList<BlockEntity>();
+
+    LevelEntity currentLevel = new LevelEntity();
 
     public void create() {
         batch = new SpriteBatch();
@@ -17,7 +23,6 @@ public class BarnyardExplosion extends Game {
         font = new BitmapFont();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1204, 1024);
-        
         this.setScreen(new MainMenuScreen(this));
     }
 

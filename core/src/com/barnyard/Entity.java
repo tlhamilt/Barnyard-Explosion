@@ -10,14 +10,14 @@ public abstract class Entity {
 	private int height;
 	private Rectangle hitBox;
 	private Sprite sprite;
-	public GameScreen parent;
+	public BarnyardExplosion game;
 	
-	public Entity(int xPos, int yPos, int width, int height, GameScreen parent, Sprite sprite){
+	public Entity(int xPos, int yPos, int width, int height, BarnyardExplosion game, Sprite sprite){
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.width = width;
 		this.height = height;
-		this.parent = parent;
+		this.game = game;
 		this.sprite = sprite;
 		hitBox = new Rectangle(xPos, yPos, width, height);
 	}
@@ -66,5 +66,9 @@ public abstract class Entity {
 	}
 	public Sprite getSprite(){
 		return sprite;
+	}
+	public void drawEntity(){
+		game.batch.draw(sprite, xPos, yPos);
+
 	}
 }

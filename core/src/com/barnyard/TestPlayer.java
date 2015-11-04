@@ -3,7 +3,7 @@ package com.barnyard;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class PlayerEntity extends MovingEntity {
+public class TestPlayer extends MovingEntity {
 	private int health;
 	public int attackKey;
 	public int leftKey;
@@ -20,14 +20,11 @@ public class PlayerEntity extends MovingEntity {
 	public int hurtTime = 10;
 	public int attackX;
 	public int attackY;
-	Collision parent;
 	public Sprite attackSprite;
 	// variable for weapon eqquiped
 
-	public PlayerEntity(int xPos, int yPos, int width, int height, BarnyardExplosion game, 
-			Texture[] animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey, 
-			int attackKey){
-		super(xPos, yPos, width, height, game, new Sprite(animations[0]), xVelocity, yVelocity);
+	public TestPlayer(int xPos, int yPos, int width, int height,BarnyardExplosion game, Texture[] animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey, int attackKey){
+		super(xPos, yPos, width, height,game, new Sprite(animations[0]), xVelocity, yVelocity);
 		health = 100;
 		characterAnimations = animations;
 		animationState = 0;
@@ -37,11 +34,7 @@ public class PlayerEntity extends MovingEntity {
 		this.attackKey = attackKey;
 		direction = 1;
 		controlEnabled = true;
-		attackEnabled = true;
-		parent = new Collision();
-		attackSprite = new Sprite(new Texture("PunchEffect.png"));
-		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2) + 2;
-		attackX = getXPos() + getWidth();
+
 	}
 	
 	// This controls the animation image of the characters
@@ -63,52 +56,24 @@ public class PlayerEntity extends MovingEntity {
 				setCharacterState(0);
 				}
 		}
-
 		setXPos(getXPos() + getXVelocity());
 		if(getYVelocity() > -10){
-			setYVelocity(getYVelocity() - game.currentLevel.getGravity());
+			setYVelocity(getYVelocity() - 1);
 		}
-		setYPos(getYPos() + getYVelocity());
 		grounded = false;
-
-		for(BlockEntity b : game.currentLevel.blocks)
+		
+		if(getYVelocity() != 0)
 		{
-			int dir = parent.isColliding(this, b);
-			if(dir == 1){
-				setYPos(b.getYPos() + b.getHeight()-1);
-				setYVelocity(0);					// change here
-				grounded = true;
-			}
-			else if(dir == 2){
-				setYPos(b.getYPos() - getHeight());
-				setYVelocity(0);
-			}
-			else if(dir == 3){
-				setXPos(b.getXPos() + b.getWidth());
-				setXVelocity(0);
-			}
-			else if(dir == 4){
-				setXPos(b.getXPos() - getWidth());
-				setXVelocity(0);
-			}
+			setYPos(getYPos() + getYVelocity());
 		}
 		if(getYPos() < 0){
 			setYPos(0);
 			setYVelocity(0);
 			grounded = true;
 		}
-		if(direction == 1){
-			attackX = getXPos() + getWidth();
-		}
-		else{
-			attackX = getXPos() - (int)attackSprite.getWidth();
-		}
-		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2) + 2;
 		if(getXVelocity() != 0)//Walking Animation Timer
 		animationCounter++;
-		drawEntity();
 	}
-	
 	public void die(){
 		// put code for death here
 	}

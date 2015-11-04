@@ -49,21 +49,12 @@ public class GameScreen implements Screen{
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
 		//PlayerEntities now accept texture arrays
-		players.add(new PlayerEntity(0, 64, 32, 64, this,horseTextures, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN));
-		players.add(new PlayerEntity(256, 64, 32, 64, this, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W, Keys.S));
-		players.add(new PlayerEntity(512, 64, 32, 64, this, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I, Keys.K));
-		players.add(new PlayerEntity(768, 64, 32, 64, this, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T, Keys.G));
+
+//		players.add(new PlayerEntity(10, 0, 32, 64, game,horseTextures, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN));
+//		players.add(new PlayerEntity(42, 0, 32, 64, game, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W, Keys.S));
+//		players.add(new PlayerEntity(74, 0, 32, 64, game, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I, Keys.K));
+//		players.add(new PlayerEntity(106, 0, 32, 64, game, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T, Keys.G));
 		//blocks.add(new BlockEntity(268, 0, 64, 64, this, new Sprite(blockImg), false, false));
-		//blocks.add(new BlockEntity(268, 64, 64, 64, this, new Sprite(blockImg), true, true));
-		//blocks.add(new BlockEntity(268, 2 * 64, 64, 64, this, new Sprite(blockImg), true, false));
-		//blocks.add(new BlockEntity(268 - 64, 0, 64, 64, this, new Sprite(blockImg), true, false));
-		int x = 0;
-		while(x <= 1024 - 64){
-			blocks.add(new BlockEntity(x, 0, 64, 64 + 1, this, new Sprite(blockImg), true, false));
-			x += 64;
-		}
-		blocks.add(new BlockEntity(300, 64, 64, 64 + 1, this, new Sprite(blockImg), true, false));
-		blocks.add(new BlockEntity(364, 128, 64, 64 + 1, this, new Sprite(blockImg), true, true));
 		sound = Gdx.audio.newSound(Gdx.files.internal("RiverValleyBreakdown.mp3"));
 		sound.loop();
 		
@@ -76,19 +67,42 @@ public class GameScreen implements Screen{
 		//System.out.println(delta);
 
 		//Gdx.graphics.getDeltaTime();
-		for(PlayerEntity p : players){
-			if(keyboardListener.keysPressed[p.attackKey] && p.controlEnabled & p.attackEnabled){
-				p.setCharacterState(2);
-				if(p.grounded){
-					p.setXVelocity(0);
-				}
-				p.controlEnabled = false;
-				p.attackEnabled = false;
-			}
+		//Gdx.gl.glClearColor(0, 1, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		
+        camera.update();
+        
+        game.batch.setProjectionMatrix(camera.combined);
+
+		game.batch.begin();
+		game.currentLevel.drawLevel();		
+		controller();
+
+//		for(PlayerEntity p : players){
+//			game.batch.draw(p.getSprite(), p.getXPos(), p.getYPos());
+//			if(p.animationState == 2){
+//				game.batch.draw(p.attackSprite, p.attackX, p.attackY);
+//			}
+//		}
+		game.batch.end();
+		
+	}
+	
+	public void controller(){
+		for(PlayerEntity p : game.players){
+//			if(keyboardListener.keysPressed[p.attackKey] && p.controlEnabled & p.attackEnabled){ //Attack
+//				p.setCharacterState(2);
+//				if(p.grounded){
+//					p.setXVelocity(0);
+//				}
+//				p.controlEnabled = false;
+//				p.attackEnabled = false;
+//			}
 			if(!keyboardListener.keysPressed[p.attackKey]){
 				p.attackEnabled = true;
 			}
-			if(keyboardListener.keysPressed[p.leftKey] && p.controlEnabled){
+			if(keyboardListener.keysPressed[p.leftKey] && p.controlEnabled){ // move left
 				p.setXVelocity(-2);
 				if(p.direction == 1){
 					p.direction = -1;
@@ -97,7 +111,7 @@ public class GameScreen implements Screen{
 					p.attackSprite.flip(true, false);
 				}
 			}
-			if(keyboardListener.keysPressed[p.rightKey] && p.controlEnabled){
+			if(keyboardListener.keysPressed[p.rightKey] && p.controlEnabled){ //move right
 				p.setXVelocity(2);
 				if(p.direction == -1){
 					p.direction = 1;
@@ -127,7 +141,7 @@ public class GameScreen implements Screen{
 				}
 			}
 		}
-		Gdx.gl.glClearColor(0, 1, 0, 1);
+		/*Gdx.gl.glClearColor(0, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
         camera.update();
@@ -190,8 +204,10 @@ public class GameScreen implements Screen{
 		if(westRect.contains(e1.getXPos(), e1.getYPos())){
 			return 4;
 		}
-		return 0;
+		return 0;*/
 	}
+	
+	
 
 	@Override
 	public void show() {
