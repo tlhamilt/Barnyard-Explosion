@@ -42,12 +42,7 @@ public class GameOptionsScreen implements InputProcessor, Screen {
         for (int i = 0; i < characterCount; i++){
 			characters[i].setPosition(32 * i + (400 - (characterCount - i) * 32), 320);
 		}
-        ArrayList<BlockEntity> blocks = new ArrayList<BlockEntity>();
-        blocks.add(new BlockEntity(268, 64, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, true));
-		//blocks.add(new BlockEntity(268, 2 * 64, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
-		blocks.add(new BlockEntity(268 - 64, 0, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
-        LevelEntity level = new LevelEntity(new Texture("background.png"),blocks,game);
-        game.currentLevel = level;
+        
         
 	}
 	
@@ -90,6 +85,12 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 			}
 		}
 		if(screenX > 760 && screenY > 440){
+			ArrayList<BlockEntity> blocks = new ArrayList<BlockEntity>();
+	        blocks.add(new BlockEntity(268, 64, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, true));
+			//blocks.add(new BlockEntity(268, 2 * 64, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
+			blocks.add(new BlockEntity(268 - 64, 0, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
+	        LevelEntity level = new LevelEntity(new Texture("background.png"),blocks,game);
+	        game.currentLevel = level;
 			game.setScreen(new GameScreen(game));
 		}
 		return false;
