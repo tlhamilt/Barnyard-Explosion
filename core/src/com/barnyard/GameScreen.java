@@ -19,6 +19,7 @@ public class GameScreen implements Screen{
 	private Texture[] cowTextures;   //and parse the data from it based on character selection
 	private Texture[] pigTextures;
 	private Texture[] chickenTextures;
+	private Texture backgroundTexture;
 	
 	private BarnyardExplosion game;
     OrthographicCamera camera;
@@ -34,27 +35,35 @@ public class GameScreen implements Screen{
 	public GameScreen(BarnyardExplosion barnyardExplosion) {
 		this.game = barnyardExplosion;
 		camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false, 1024, 1024); // 800, 480
 
 		horseTextures = new Texture[]{new Texture("HorseStanding.png"),new Texture("HorseWalking.png"),new Texture("HorsePunching.png"),new Texture("HorseSound.png")};
 		cowTextures = new Texture[]{new Texture("CowStanding.png"),new Texture("CowWalking.png"),new Texture("CowPunching.png"),new Texture("CowSound.png")};
 		pigTextures = new Texture[]{new Texture("PigStanding.png"),new Texture("PigWalking.png"),new Texture("PigPunching.png")};
 		chickenTextures = new Texture[]{new Texture("ChickenStanding.png"),new Texture("ChickenWalking.png"),new Texture("ChickenPunching.png")};
-
+		
+		backgroundTexture = new Texture("backround.png");
 		blockImg = new Texture("GroundMiddle.png");
 		punchImg = new Texture("PunchEffect.png");
 		
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
 		//PlayerEntities now accept texture arrays
-		players.add(new PlayerEntity(10, 0, 32, 64, this,horseTextures, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN));
-		players.add(new PlayerEntity(42, 0, 32, 64, this, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W, Keys.S));
-		players.add(new PlayerEntity(74, 0, 32, 64, this, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I, Keys.K));
-		players.add(new PlayerEntity(106, 0, 32, 64, this, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T, Keys.G));
+		players.add(new PlayerEntity(0, 64, 32, 64, this,horseTextures, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN));
+		players.add(new PlayerEntity(256, 64, 32, 64, this, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W, Keys.S));
+		players.add(new PlayerEntity(512, 64, 32, 64, this, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I, Keys.K));
+		players.add(new PlayerEntity(768, 64, 32, 64, this, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T, Keys.G));
 		//blocks.add(new BlockEntity(268, 0, 64, 64, this, new Sprite(blockImg), false, false));
-		blocks.add(new BlockEntity(268, 64, 64, 64, this, new Sprite(blockImg), true, true));
+		//blocks.add(new BlockEntity(268, 64, 64, 64, this, new Sprite(blockImg), true, true));
 		//blocks.add(new BlockEntity(268, 2 * 64, 64, 64, this, new Sprite(blockImg), true, false));
-		blocks.add(new BlockEntity(268 - 64, 0, 64, 64, this, new Sprite(blockImg), true, false));
+		//blocks.add(new BlockEntity(268 - 64, 0, 64, 64, this, new Sprite(blockImg), true, false));
+		int x = 0;
+		while(x <= 1024 - 64){
+			blocks.add(new BlockEntity(x, 0, 64, 64 + 1, this, new Sprite(blockImg), true, false));
+			x += 64;
+		}
+		blocks.add(new BlockEntity(300, 64, 64, 64 + 1, this, new Sprite(blockImg), true, false));
+		blocks.add(new BlockEntity(364, 128, 64, 64 + 1, this, new Sprite(blockImg), true, true));
 		sound = Gdx.audio.newSound(Gdx.files.internal("RiverValleyBreakdown.mp3"));
 		sound.loop();
 		
@@ -126,15 +135,15 @@ public class GameScreen implements Screen{
         game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
+		game.batch.draw(backgroundTexture, 0, 0);
+		for(StationaryEntity b : blocks)
+			game.batch.draw(b.getSprite(), b.getXPos(), b.getYPos());
 		for(PlayerEntity p : players){
 			game.batch.draw(p.getSprite(), p.getXPos(), p.getYPos());
 			if(p.animationState == 2){
 				game.batch.draw(p.attackSprite, p.attackX, p.attackY);
 			}
 		}
-		for(StationaryEntity b : blocks)
-			game.batch.draw(b.getSprite(), b.getXPos(), b.getYPos());
-		
 		game.batch.end();
 		
 	}
@@ -163,7 +172,7 @@ public class GameScreen implements Screen{
 		}
 		y = e2.getYPos() - e1.getHeight();
 		h -= 1;
-		Rectangle southRect = new Rectangle(x, y, w, h);
+		Rectangle southRect = new Rectangle(x, y, w, h);													  //<
 		if(southRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() + e1.getHeight() - e1.getYVelocity() < e2.getYPos() && e2.isBottomOpen()){
 			return 2;
 		}

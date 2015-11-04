@@ -64,7 +64,9 @@ public class PlayerEntity extends MovingEntity {
 		if(getYVelocity() > -10){
 			setYVelocity(getYVelocity() - parent.gravity);
 		}
+		setYPos(getYPos() + getYVelocity());
 		grounded = false;
+		boolean isColliding = false;
 		for(BlockEntity b : parent.blocks)
 		{
 			int dir = parent.isColliding(this, b);
@@ -72,10 +74,12 @@ public class PlayerEntity extends MovingEntity {
 				setYPos(b.getYPos() + b.getHeight() - 1);
 				setYVelocity(0);					// change here
 				grounded = true;
+				isColliding = true;
 			}
 			else if(dir == 2){
 				setYPos(b.getYPos() - getHeight());
 				setYVelocity(0);
+				isColliding = true;
 			}
 			else if(dir == 3){
 				setXPos(b.getXPos() + b.getWidth());
@@ -86,10 +90,10 @@ public class PlayerEntity extends MovingEntity {
 				setXVelocity(0);
 			}
 		}
-		if(getYVelocity() != 0)
+		/*if(!isColliding)
 		{
 			setYPos(getYPos() + getYVelocity());
-		}
+		}*/
 		if(getYPos() < 0){
 			setYPos(0);
 			setYVelocity(0);
