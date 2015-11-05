@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -62,6 +63,7 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 		game.batch.begin();
 		for (int i = 0; i < characterCount; i++){
 			game.batch.draw(characters[i], 32 * i + (400 - (characterCount - i) * 32) , 320);
+			game.batch.draw(new TextureRegion(characters[0].getTexture(),28,58), 100, 100);//Demo Texture Regions
 		}
 		game.batch.draw(new Texture("block.png"), 760, 0);
 		for(PlayerEntity e : game.players){
@@ -78,7 +80,11 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 		if(playerCount < 4){
 			for(Sprite current : characters){
 				if(current.getBoundingRectangle().contains(screenX,480-screenY)){
-					PlayerEntity newGuy = new PlayerEntity((int)current.getX(),(int)current.getY(),32,64,game,new Texture[]{current.getTexture(),current.getTexture()},0,0,controls[playerCount][0],controls[playerCount][1],controls[playerCount][2],controls[playerCount][3]);
+					PlayerEntity newGuy = new PlayerEntity((int)current.getX(),(int)current.getY(),32,64,
+							game,new Texture[]{current.getTexture(),current.getTexture()},0,0,
+							controls[playerCount][0],controls[playerCount][1],controls[playerCount][2],
+							controls[playerCount][3]); //this is the correct implementation for when we start using
+													   //Texture Regions that is why animation isn't changing sprite
 					game.players.add(newGuy);
 					playerCount++;
 				}
