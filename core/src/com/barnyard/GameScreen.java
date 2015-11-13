@@ -123,8 +123,7 @@ public class GameScreen implements Screen{
 				p.setCharacterState(0);
 			}
 			if(keyboardListener.keysPressed[p.jumpKey] && p.grounded && p.controlEnabled){
-				p.setYVelocity(16);
-				p.setYPos(p.getYPos() + 1);
+				p.setYVelocity(17);
 			}
 			p.move();
 			if(p.animationState == 2){
