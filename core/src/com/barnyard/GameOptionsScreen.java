@@ -24,7 +24,7 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 	BarnyardExplosion game;
 	
 	private int playerCount = 0;	
-	private Sprite[] characters = new Sprite[]{new Sprite(new Texture("HorseStanding.png")),
+	private Sprite[] characters = new Sprite[]{new Sprite(new Texture("Horse.png")),
 			new Sprite(new Texture("CowStanding.png")),new Sprite(new Texture("Chicken.png")),
 			new Sprite(new Texture("Pig.png"))};
 			//Format:Standing,Walking,Walking,Walking,Walking,Walking,punch,speech
@@ -79,9 +79,9 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if(playerCount < 4){
-			int counter=0;
 			for(Sprite current : characters){
-				if(current.getBoundingRectangle().contains(screenX,480-screenY)){
+				Rectangle selector = new Rectangle(current.getX(),current.getY(),32,64);
+				if(selector.contains(screenX,480-screenY)){
 					PlayerEntity newGuy = new PlayerEntity((int)current.getX(),(int)current.getY(),32,64,
 							game,current.getTexture(),0,0,
 							controls[playerCount][0],controls[playerCount][1],controls[playerCount][2],
@@ -89,7 +89,6 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 													   //Texture Regions that is why animation isn't changing sprite
 					game.players.add(newGuy);
 					playerCount++;
-					counter++;
 				}
 			}
 		}
