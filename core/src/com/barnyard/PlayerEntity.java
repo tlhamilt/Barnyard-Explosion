@@ -28,7 +28,7 @@ public class PlayerEntity extends MovingEntity {
 	public PlayerEntity(int xPos, int yPos, int width, int height, BarnyardExplosion game, 
 			Texture animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey, 
 			int attackKey){
-		super(xPos, yPos, width, height, game, new Sprite(animations), xVelocity, yVelocity);
+		super(xPos, yPos, width, height, game, new Sprite(new TextureRegion(animations,32,64)), xVelocity, yVelocity);
 		health = 100;
 		characterAnimations = animations;
 		animationState = 0;
@@ -54,24 +54,20 @@ public class PlayerEntity extends MovingEntity {
 			getSprite().flip(true, false);
 		}
 	}
-	
-	public void move(){
-		
-		if(animationCounter % 10 == 0 && grounded && controlEnabled){//Temporary Walking Animation
+	public void walking(){
+		if(animationCounter % 10 == 1 && grounded && controlEnabled){//Temporary Walking Animation
 			if(animationState == 0){			   //May need to change for added animations
 				setCharacterState(1);
 			}else{
 				setCharacterState(0);
 				}
 		}
-
-		setXPos(getXPos() + getXVelocity());
-		if(getYVelocity() > -10){
-			setYVelocity(getYVelocity() - game.currentLevel.getGravity());
-		}
-		setYPos(getYPos() + getYVelocity());
-		grounded = false;
-
+		animationCounter++;
+	}
+	public void attacking(){
+		//add attacking framework and animation
+	}
+	public void collision(){
 		for(BlockEntity b : game.currentLevel.blocks)
 		{
 			int dir = parent.isColliding(this, b);
@@ -93,6 +89,19 @@ public class PlayerEntity extends MovingEntity {
 				setXVelocity(0);
 			}
 		}
+	}
+	public void move(){
+		if(getXVelocity() != 0)
+			walking();
+
+		setXPos(getXPos() + getXVelocity());
+		if(getYVelocity() > -10){
+			setYVelocity(getYVelocity() - game.currentLevel.getGravity());
+		}
+		setYPos(getYPos() + getYVelocity());
+		grounded = false;
+
+		collision();
 		if(getYPos() < 0){
 			setYPos(0);
 			setYVelocity(0);
@@ -105,8 +114,7 @@ public class PlayerEntity extends MovingEntity {
 			attackX = getXPos() - (int)attackSprite.getWidth();
 		}
 		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2) + 2;
-		if(getXVelocity() != 0)//Walking Animation Timer
-		animationCounter++;
+
 		drawEntity();
 	}
 	

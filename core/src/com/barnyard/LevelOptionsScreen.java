@@ -18,31 +18,16 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class GameOptionsScreen implements InputProcessor, Screen {
-	
+public class LevelOptionsScreen implements InputProcessor, Screen {
+	public OrthographicCamera camera;
 	
 	BarnyardExplosion game;
 	
-	private int playerCount = 0;	
-	private Sprite[] characters = new Sprite[]{new Sprite(new Texture("HorseStanding.png")),
-			new Sprite(new Texture("CowStanding.png")),new Sprite(new Texture("ChickenStanding.png")),
-			new Sprite(new Texture("Pig.png"))};
-	
-	private final int characterCount = characters.length;
-    OrthographicCamera camera;
-    int [][] controls = {{Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN},{Keys.A, Keys.D, Keys.W, Keys.S},{Keys.J, Keys.L, Keys.I, Keys.K},{Keys.F, Keys.H, Keys.T, Keys.G}};
-    
-
-	public GameOptionsScreen(BarnyardExplosion game){
+	public LevelOptionsScreen(BarnyardExplosion game){
 		this.game = game;
 		camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-        Gdx.input.setInputProcessor(this);
-        for (int i = 0; i < characterCount; i++){
-			characters[i].setPosition(32 * i + (400 - (characterCount - i) * 32), 320);
-		}
-        
-        
+        Gdx.input.setInputProcessor(this);        
 	}
 	
 	@Override
@@ -59,44 +44,13 @@ public class GameOptionsScreen implements InputProcessor, Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
-		for (int i = 0; i < characterCount; i++){
-			game.batch.draw(new TextureRegion(characters[i].getTexture(),32,64), 32 * i + (400 - (characterCount - i) * 32) , 320);
-			//game.batch.draw(, 100, 100);//Demo Texture Regions
-		}
-		game.batch.draw(new Texture("block.png"), 760, 0);
-		for(PlayerEntity e : game.players){
-			e.move();
-			if(e.getXPos() >= 800 - (playerCount * 20)){
-				e.setXVelocity(0);
-			}
-		}
+		
 		game.batch.end();
 	}
 	
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if(playerCount < 4){
-			for(Sprite current : characters){
-				if(current.getBoundingRectangle().contains(screenX,480-screenY)){
-					PlayerEntity newGuy = new PlayerEntity((int)current.getX(),(int)current.getY(),32,64,
-							game,current.getTexture(),0,0,
-							controls[playerCount][0],controls[playerCount][1],controls[playerCount][2],
-							controls[playerCount][3]); //this is the correct implementation for when we start using
-													   //Texture Regions that is why animation isn't changing sprite
-					game.players.add(newGuy);
-					playerCount++;
-				}
-			}
-		}
-		if(screenX > 760 && screenY > 440){
-			ArrayList<BlockEntity> blocks = new ArrayList<BlockEntity>();
-	        blocks.add(new BlockEntity(268, 64, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, true));
-			//blocks.add(new BlockEntity(268, 2 * 64, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
-			blocks.add(new BlockEntity(268 - 64, 0, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
-	        LevelEntity level = new LevelEntity(new Texture("Backround1.png"),blocks,game);
-	        game.currentLevel = level;
-			game.setScreen(new GameScreen(game));
-		}
+		
 		return false;
 	}
 	@Override
