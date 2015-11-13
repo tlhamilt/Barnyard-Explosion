@@ -25,12 +25,14 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 	
 	private int playerCount = 0;	
 	private Sprite[] characters = new Sprite[]{new Sprite(new Texture("HorseStanding.png")),
-			new Sprite(new Texture("CowStanding.png")),new Sprite(new Texture("ChickenStanding.png")),
+			new Sprite(new Texture("CowStanding.png")),new Sprite(new Texture("Chicken.png")),
 			new Sprite(new Texture("Pig.png"))};
+			//Format:Standing,Walking,Walking,Walking,Walking,Walking,punch,speech
 	
 	private final int characterCount = characters.length;
     OrthographicCamera camera;
-    int [][] controls = {{Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN},{Keys.A, Keys.D, Keys.W, Keys.S},{Keys.J, Keys.L, Keys.I, Keys.K},{Keys.F, Keys.H, Keys.T, Keys.G}};
+    int [][] controls = {{Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN},{Keys.A, Keys.D, Keys.W, Keys.S},
+    		{Keys.J, Keys.L, Keys.I, Keys.K},{Keys.F, Keys.H, Keys.T, Keys.G}};
     
 
 	public GameOptionsScreen(BarnyardExplosion game){
@@ -70,12 +72,14 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 				e.setXVelocity(0);
 			}
 		}
+		
 		game.batch.end();
 	}
 	
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if(playerCount < 4){
+			int counter=0;
 			for(Sprite current : characters){
 				if(current.getBoundingRectangle().contains(screenX,480-screenY)){
 					PlayerEntity newGuy = new PlayerEntity((int)current.getX(),(int)current.getY(),32,64,
@@ -85,19 +89,25 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 													   //Texture Regions that is why animation isn't changing sprite
 					game.players.add(newGuy);
 					playerCount++;
+					counter++;
 				}
 			}
 		}
 		if(screenX > 760 && screenY > 440){
-			ArrayList<BlockEntity> blocks = new ArrayList<BlockEntity>();
-	        blocks.add(new BlockEntity(268, 64, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, true));
-			//blocks.add(new BlockEntity(268, 2 * 64, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
-			blocks.add(new BlockEntity(268 - 64, 0, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
-	        LevelEntity level = new LevelEntity(new Texture("Backround1.png"),blocks,game);
-	        game.currentLevel = level;
+			setLevel();
 			game.setScreen(new GameScreen(game));
 		}
 		return false;
+	}
+	public void setLevel(){
+		ArrayList<BlockEntity> blocks = new ArrayList<BlockEntity>();
+		for(int i = 0; i < 800; i += 64){
+			blocks.add(new BlockEntity(i, 0, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
+
+		}
+	        LevelEntity level = new LevelEntity(new Texture("background480x800.png"),blocks,game);	       
+	        game.currentLevel = level;
+
 	}
 	@Override
 	public void resize(int width, int height) {

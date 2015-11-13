@@ -25,7 +25,7 @@ public class LevelEntity {
 	}
 	
 	public void drawLevel(){
-		game.batch.draw(background,0,0);
+		game.batch.draw(background,0,0);//,800,480);
 		for(BlockEntity b : blocks){
 			game.batch.draw(b.getSprite(), b.getXPos(), b.getYPos());
 		}
