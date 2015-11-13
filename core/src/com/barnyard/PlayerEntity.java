@@ -2,6 +2,7 @@ package com.barnyard;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class PlayerEntity extends MovingEntity {
 	private int health;
@@ -10,7 +11,7 @@ public class PlayerEntity extends MovingEntity {
 	public int rightKey;
 	public int jumpKey;
 	public int direction;
-	private Texture[] characterAnimations;
+	private Texture characterAnimations;
 	private int animationCounter = 0;
 	public int animationState;
 	public boolean controlEnabled;
@@ -25,9 +26,9 @@ public class PlayerEntity extends MovingEntity {
 	// variable for weapon eqquiped
 
 	public PlayerEntity(int xPos, int yPos, int width, int height, BarnyardExplosion game, 
-			Texture[] animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey, 
+			Texture animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey, 
 			int attackKey){
-		super(xPos, yPos, width, height, game, new Sprite(animations[0]), xVelocity, yVelocity);
+		super(xPos, yPos, width, height, game, new Sprite(animations), xVelocity, yVelocity);
 		health = 100;
 		characterAnimations = animations;
 		animationState = 0;
@@ -47,7 +48,7 @@ public class PlayerEntity extends MovingEntity {
 	// This controls the animation image of the characters
 	// Index Reference: 0 - Standing, 1 - Walking, 2 - Punching, 3 - Speaking/Sound
 	public void setCharacterState(int state){ 
-		setSprite(new Sprite(characterAnimations[state])); 
+		setSprite(new Sprite(new TextureRegion(characterAnimations,32 * state, 0 , 32, 64))); 
 		animationState = state;
 		if (direction == -1){
 			getSprite().flip(true, false);

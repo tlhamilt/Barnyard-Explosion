@@ -19,7 +19,6 @@ public class GameScreen implements Screen{
 	private Texture[] cowTextures;   //and parse the data from it based on character selection
 	private Texture[] pigTextures;
 	private Texture[] chickenTextures;
-	private Texture backgroundTexture;
 	
 	private BarnyardExplosion game;
     OrthographicCamera camera;
@@ -35,26 +34,25 @@ public class GameScreen implements Screen{
 	public GameScreen(BarnyardExplosion barnyardExplosion) {
 		this.game = barnyardExplosion;
 		camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480); // 800, 480
+        camera.setToOrtho(false, 800, 480);
 
 		horseTextures = new Texture[]{new Texture("HorseStanding.png"),new Texture("HorseWalking.png"),new Texture("HorsePunching.png"),new Texture("HorseSound.png")};
 		cowTextures = new Texture[]{new Texture("CowStanding.png"),new Texture("CowWalking.png"),new Texture("CowPunching.png"),new Texture("CowSound.png")};
 		pigTextures = new Texture[]{new Texture("PigStanding.png"),new Texture("PigWalking.png"),new Texture("PigPunching.png")};
 		chickenTextures = new Texture[]{new Texture("ChickenStanding.png"),new Texture("ChickenWalking.png"),new Texture("ChickenPunching.png")};
-		
-		backgroundTexture = new Texture("background.png");
+
 		blockImg = new Texture("GroundMiddle.png");
 		punchImg = new Texture("PunchEffect.png");
 		
 		keyboardListener = new Listener();
 		Gdx.input.setInputProcessor(keyboardListener);
 		//PlayerEntities now accept texture arrays
-
 //		players.add(new PlayerEntity(10, 0, 32, 64, game,horseTextures, 0, 0, Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN));
 //		players.add(new PlayerEntity(42, 0, 32, 64, game, cowTextures, 0, 0, Keys.A, Keys.D, Keys.W, Keys.S));
 //		players.add(new PlayerEntity(74, 0, 32, 64, game, pigTextures, 0, 0, Keys.J, Keys.L, Keys.I, Keys.K));
 //		players.add(new PlayerEntity(106, 0, 32, 64, game, chickenTextures, 0, 0, Keys.F, Keys.H, Keys.T, Keys.G));
 		//blocks.add(new BlockEntity(268, 0, 64, 64, this, new Sprite(blockImg), false, false));
+		
 		sound = Gdx.audio.newSound(Gdx.files.internal("RiverValleyBreakdown.mp3"));
 		sound.loop();
 		
@@ -125,7 +123,8 @@ public class GameScreen implements Screen{
 				p.setCharacterState(0);
 			}
 			if(keyboardListener.keysPressed[p.jumpKey] && p.grounded && p.controlEnabled){
-				p.setYVelocity(17);
+				p.setYVelocity(16);
+				p.setYPos(p.getYPos() + 1);
 			}
 			p.move();
 			if(p.animationState == 2){
