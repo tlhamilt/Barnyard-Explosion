@@ -23,13 +23,13 @@ public class Collision {
 		int h = (e2.getHeight() / 2) + (e1.getHeight() / 2); // change here
 		Rectangle northRect = new Rectangle(x, y, w, h);
 		// if the created rectangle contains the player's position, the collision is on that side
-		if(northRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() - e1.getYVelocity() + 2 > e2.getYPos() + e2.getHeight() && e2.isTopOpen()){
+		if(northRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() - e1.getYVelocity() >= e2.getYPos() + e2.getHeight() && e2.isTopOpen()){
 			return 1;																		// change here
 		}
 		y = e2.getYPos() - e1.getHeight();
 		h -= 1;
 		Rectangle southRect = new Rectangle(x, y, w, h);
-		if(southRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() + e1.getHeight() - e1.getYVelocity() < e2.getYPos() && e2.isBottomOpen()){
+		if(southRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() + e1.getHeight() - e1.getYVelocity() <= e2.getYPos() && e2.isBottomOpen()){
 			return 2;
 		}
 		x = e2.getXPos() + (e2.getWidth() / 2) - (e1.getWidth() / 2);

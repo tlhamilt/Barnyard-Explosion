@@ -35,14 +35,14 @@ public class GameScreen implements Screen{
 	public GameScreen(BarnyardExplosion barnyardExplosion) {
 		this.game = barnyardExplosion;
 		camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1024, 1024); // 800, 480
+        camera.setToOrtho(false, 800, 480); // 800, 480
 
 		horseTextures = new Texture[]{new Texture("HorseStanding.png"),new Texture("HorseWalking.png"),new Texture("HorsePunching.png"),new Texture("HorseSound.png")};
 		cowTextures = new Texture[]{new Texture("CowStanding.png"),new Texture("CowWalking.png"),new Texture("CowPunching.png"),new Texture("CowSound.png")};
 		pigTextures = new Texture[]{new Texture("PigStanding.png"),new Texture("PigWalking.png"),new Texture("PigPunching.png")};
 		chickenTextures = new Texture[]{new Texture("ChickenStanding.png"),new Texture("ChickenWalking.png"),new Texture("ChickenPunching.png")};
 		
-		backgroundTexture = new Texture("backround.png");
+		backgroundTexture = new Texture("background.png");
 		blockImg = new Texture("GroundMiddle.png");
 		punchImg = new Texture("PunchEffect.png");
 		
@@ -125,8 +125,7 @@ public class GameScreen implements Screen{
 				p.setCharacterState(0);
 			}
 			if(keyboardListener.keysPressed[p.jumpKey] && p.grounded && p.controlEnabled){
-				p.setYVelocity(16);
-				p.setYPos(p.getYPos() + 1);
+				p.setYVelocity(17);
 			}
 			p.move();
 			if(p.animationState == 2){
@@ -141,70 +140,6 @@ public class GameScreen implements Screen{
 				}
 			}
 		}
-		/*Gdx.gl.glClearColor(0, 1, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-        camera.update();
-        
-        game.batch.setProjectionMatrix(camera.combined);
-
-		game.batch.begin();
-		game.batch.draw(backgroundTexture, 0, 0);
-		for(StationaryEntity b : blocks)
-			game.batch.draw(b.getSprite(), b.getXPos(), b.getYPos());
-		for(PlayerEntity p : players){
-			game.batch.draw(p.getSprite(), p.getXPos(), p.getYPos());
-			if(p.animationState == 2){
-				game.batch.draw(p.attackSprite, p.attackX, p.attackY);
-			}
-		}
-		game.batch.end();
-		
-	}
-	int isColliding(MovingEntity e1, StationaryEntity e2){
-		// This method determines if a player and a block are colliding, and if so,
-		// which side the player is colliding with.
-		// The program returns 0 if there is no collision,
-		// returns 1 if the player is colliding with the north side,
-		// returns 2 if the player is colliding with the south side,
-		// returns 3 if the player is colliding with the east side,
-		// and returns 4 if the player is colliding with the west side.
-		// determines if there is a collision
-		if(!e1.getHitBox().overlaps(e2.getHitBox())){
-			return 0;
-		}
-		// for each possible side, a rectangle is generated containing all possible points that
-		// the player's position could be if they are colliding on that side
-		int x = e2.getXPos() - e1.getWidth();
-		int y = e2.getYPos() + (e2.getHeight() / 2) - (e1.getHeight() / 2);
-		int w = e1.getWidth() + e2.getWidth();
-		int h = (e2.getHeight() / 2) + (e1.getHeight() / 2); // change here
-		Rectangle northRect = new Rectangle(x, y, w, h);
-		// if the created rectangle contains the player's position, the collision is on that side
-		if(northRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() - e1.getYVelocity() + 2 > e2.getYPos() + e2.getHeight() && e2.isTopOpen()){
-			return 1;																		// change here
-		}
-		y = e2.getYPos() - e1.getHeight();
-		h -= 1;
-		Rectangle southRect = new Rectangle(x, y, w, h);													  //<
-		if(southRect.contains(e1.getXPos(), e1.getYPos()) && e1.getYPos() + e1.getHeight() - e1.getYVelocity() < e2.getYPos() && e2.isBottomOpen()){
-			return 2;
-		}
-		x = e2.getXPos() + (e2.getWidth() / 2) - (e1.getWidth() / 2);
-		y = e2.getYPos() - e1.getHeight();
-		w = (e2.getWidth() / 2) + (e1.getWidth() / 2);
-		h = e1.getHeight() + e2.getHeight();
-		Rectangle eastRect = new Rectangle(x, y, w, h);
-		if(eastRect.contains(e1.getXPos(), e1.getYPos())){
-			return 3;
-		}
-		x = e2.getXPos() - e1.getWidth();
-		w -= 1;
-		Rectangle westRect = new Rectangle(x, y, w, h);
-		if(westRect.contains(e1.getXPos(), e1.getYPos())){
-			return 4;
-		}
-		return 0;*/
 	}
 	
 	

@@ -9,8 +9,8 @@ public class DesktopLauncher{
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Barnyard Explosion!";
-	      config.width = 1024;
-	      config.height = 1024;
+	      config.width = 800;
+	      config.height = 480;
 		new LwjglApplication(new BarnyardExplosion(), config);
 	}
 }
