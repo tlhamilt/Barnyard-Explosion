@@ -93,7 +93,7 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 	        blocks.add(new BlockEntity(268, 64, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, true));
 			//blocks.add(new BlockEntity(268, 2 * 64, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
 			blocks.add(new BlockEntity(268 - 64, 0, 64, 64, game, new Sprite(new Texture("GroundMiddle.png")), true, false));
-	        LevelEntity level = new LevelEntity(new Texture("Backround1.png",800,480),blocks,game);
+	        LevelEntity level = new LevelEntity(new Texture("Backround1.png"),blocks,game);
 	        game.currentLevel = level;
 			game.setScreen(new GameScreen(game));
 		}
