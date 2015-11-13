@@ -41,7 +41,7 @@ public class PlayerEntity extends MovingEntity {
 		attackEnabled = true;
 		parent = new Collision();
 		attackSprite = new Sprite(new Texture("PunchEffect.png"));
-		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2) + 2;
+		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2);
 		attackX = getXPos() + getWidth();
 	}
 	
@@ -65,7 +65,7 @@ public class PlayerEntity extends MovingEntity {
 		animationCounter++;
 	}
 	public void attacking(){
-		//add attacking framework and animation
+		game.batch.draw(attackSprite, attackX, attackY);
 	}
 	public void collision(){
 		for(BlockEntity b : game.currentLevel.blocks)
@@ -113,9 +113,11 @@ public class PlayerEntity extends MovingEntity {
 		else{
 			attackX = getXPos() - (int)attackSprite.getWidth();
 		}
-		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2) + 2;
-
+		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2);
 		drawEntity();
+		if(animationState == 2){
+			attacking();
+		}
 	}
 	
 	public void die(){

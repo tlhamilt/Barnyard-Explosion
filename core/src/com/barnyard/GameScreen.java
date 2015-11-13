@@ -76,27 +76,20 @@ public class GameScreen implements Screen{
 		game.batch.begin();
 		game.currentLevel.drawLevel();		
 		controller();
-
-//		for(PlayerEntity p : players){
-//			game.batch.draw(p.getSprite(), p.getXPos(), p.getYPos());
-//			if(p.animationState == 2){
-//				game.batch.draw(p.attackSprite, p.attackX, p.attackY);
-//			}
-//		}
 		game.batch.end();
 		
 	}
 	
 	public void controller(){
 		for(PlayerEntity p : game.players){
-//			if(keyboardListener.keysPressed[p.attackKey] && p.controlEnabled & p.attackEnabled){ //Attack
-//				p.setCharacterState(2);
-//				if(p.grounded){
-//					p.setXVelocity(0);
-//				}
-//				p.controlEnabled = false;
-//				p.attackEnabled = false;
-//			}
+			if(keyboardListener.keysPressed[p.attackKey] && p.controlEnabled & p.attackEnabled){ //Attack
+				p.setCharacterState(2);
+				if(p.grounded){
+					p.setXVelocity(0);
+				}
+				p.controlEnabled = false;
+				p.attackEnabled = false;
+			}
 			if(!keyboardListener.keysPressed[p.attackKey]){
 				p.attackEnabled = true;
 			}
