@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -63,6 +64,7 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 		game.batch.begin();
 		game.currentLevel.drawLevel();
 		for (int i = 0; i < characterCount; i++){
+	        game.batch.setColor(new Color(2.40f,2.20f,1.00f,1)); // 0.0 -> no change
 			game.batch.draw(new TextureRegion(characters[i].getTexture(),32,64), 32 * i + (400 - (characterCount - i) * 32) , 320);
 			//game.batch.draw(, 100, 100);//Demo Texture Regions
 		}
