@@ -25,7 +25,7 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 	
 	private int playerCount = 0;	
 	private Sprite[] characters = new Sprite[]{new Sprite(new Texture("Horse.png")),
-			new Sprite(new Texture("CowStanding.png")),new Sprite(new Texture("Chicken.png")),
+			new Sprite(new Texture("Cow.png")),new Sprite(new Texture("Chicken.png")),
 			new Sprite(new Texture("Pig.png"))};
 			//Format:Standing,Walking,Walking,Walking,Walking,Walking,punch,speech
 	
@@ -43,7 +43,7 @@ public class GameOptionsScreen implements InputProcessor, Screen {
         for (int i = 0; i < characterCount; i++){
 			characters[i].setPosition(32 * i + (400 - (characterCount - i) * 32), 320);
 		}
-        
+        setLevel();
         
 	}
 	
@@ -61,6 +61,7 @@ public class GameOptionsScreen implements InputProcessor, Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
 		game.batch.begin();
+		game.currentLevel.drawLevel();
 		for (int i = 0; i < characterCount; i++){
 			game.batch.draw(new TextureRegion(characters[i].getTexture(),32,64), 32 * i + (400 - (characterCount - i) * 32) , 320);
 			//game.batch.draw(, 100, 100);//Demo Texture Regions
@@ -78,10 +79,13 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 	
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		int X = (int)(((double)screenX/Gdx.graphics.getWidth())*800);
+		int Y = (int)(((double)screenY/Gdx.graphics.getHeight())*480);
 		if(playerCount < 4){
 			for(Sprite current : characters){
 				Rectangle selector = new Rectangle(current.getX(),current.getY(),32,64);
-				if(selector.contains(screenX,480-screenY)){
+
+				if(selector.contains(X,480-Y)){
 					PlayerEntity newGuy = new PlayerEntity((int)current.getX(),(int)current.getY(),32,64,
 							game,current.getTexture(),0,0,
 							controls[playerCount][0],controls[playerCount][1],controls[playerCount][2],
@@ -92,7 +96,7 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 				}
 			}
 		}
-		if(screenX > 760 && screenY > 440){
+		if(X > 760 && Y > 440){
 			setLevel();
 			game.setScreen(new GameScreen(game));
 		}

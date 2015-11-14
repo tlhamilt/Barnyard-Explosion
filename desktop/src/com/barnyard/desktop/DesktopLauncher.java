@@ -11,6 +11,6 @@ public class DesktopLauncher{
 		config.title = "Barnyard Explosion!";
 	      config.width = 800;
 	      config.height = 480;
-		new LwjglApplication(new BarnyardExplosion(), config);
+		new LwjglApplication(new BarnyardExplosion(),config);
 	}
 }

@@ -22,7 +22,9 @@ public class BarnyardExplosion extends Game {
         //Use LibGDX's default Arial font.
         font = new BitmapFont();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1204, 1024);
+        camera.setToOrtho(false, 800, 480);
+
+        
         this.setScreen(new MainMenuScreen(this));
     }
 
