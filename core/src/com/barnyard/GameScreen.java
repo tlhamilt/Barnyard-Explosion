@@ -83,7 +83,7 @@ public class GameScreen implements Screen{
 	public void controller(){
 		for(PlayerEntity p : game.players){
 			if(keyboardListener.keysPressed[p.attackKey] && p.controlEnabled & p.attackEnabled){ //Attack
-				p.setCharacterState(2);
+				p.setCharacterState(6);
 				if(p.grounded){
 					p.setXVelocity(0);
 				}
@@ -119,7 +119,7 @@ public class GameScreen implements Screen{
 				p.setYVelocity(17);
 			}
 			p.move();
-			if(p.animationState == 2){
+			if(p.animationState == 6){
 				if(p.grounded){
 					p.setXVelocity(0);
 				}

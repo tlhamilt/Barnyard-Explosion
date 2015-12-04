@@ -41,7 +41,7 @@ public class PlayerEntity extends MovingEntity {
 		attackEnabled = true;
 		parent = new Collision();
 		attackSprite = new Sprite(new Texture("PunchEffect.png"));
-		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2);
+		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2) + 2;
 		attackX = getXPos() + getWidth();
 	}
 	
@@ -55,12 +55,16 @@ public class PlayerEntity extends MovingEntity {
 		}
 	}
 	public void walking(){
-		if(animationCounter % 10 == 1 && grounded && controlEnabled){//Temporary Walking Animation
+		if(animationCounter % 2 == 1){//Temporary Walking Animation
 			if(animationState == 0){			   //May need to change for added animations
 				setCharacterState(1);
-			}else{
-				setCharacterState(0);
+			}
+			else{
+				setCharacterState(animationState + 1);
+				if(animationState == 6){
+					setCharacterState(1);
 				}
+			}
 		}
 		animationCounter++;
 	}
@@ -91,9 +95,9 @@ public class PlayerEntity extends MovingEntity {
 		}
 	}
 	public void move(){
-		if(getXVelocity() != 0)
+		if(getXVelocity() != 0 && grounded && controlEnabled){
 			walking();
-
+		}
 		setXPos(getXPos() + getXVelocity());
 		if(getYVelocity() > -10){
 			setYVelocity(getYVelocity() - game.currentLevel.getGravity());
@@ -113,9 +117,9 @@ public class PlayerEntity extends MovingEntity {
 		else{
 			attackX = getXPos() - (int)attackSprite.getWidth();
 		}
-		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2);
+		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2) + 2;
 		drawEntity();
-		if(animationState == 2){
+		if(animationState == 6){
 			attacking();
 		}
 	}
