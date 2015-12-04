@@ -3,6 +3,7 @@ package com.barnyard;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 
 public class PlayerEntity extends MovingEntity {
 	private int health;
@@ -18,7 +19,7 @@ public class PlayerEntity extends MovingEntity {
 	public boolean attackEnabled;
 	public int attackTime = 20;
 	public int attackCounter = attackTime;
-	public int hurtTime = 10;
+	public int hurtTime = 0;
 	public int attackX;
 	public int attackY;
 	Collision parent;
@@ -43,6 +44,7 @@ public class PlayerEntity extends MovingEntity {
 		attackSprite = new Sprite(new Texture("PunchEffect.png"));
 		attackY = getYPos() + (getHeight() / 2) - (int)(attackSprite.getHeight() / 2) + 2;
 		attackX = getXPos() + getWidth();
+		health = 100;
 	}
 	
 	// This controls the animation image of the characters
@@ -93,6 +95,25 @@ public class PlayerEntity extends MovingEntity {
 				setXVelocity(0);
 			}
 		}
+		for(PlayerEntity p : game.players){
+			Rectangle hurtbox = new Rectangle(p.attackX, p.attackY, p.attackSprite.getWidth(), p.attackSprite.getHeight());
+			if(p.animationState == 6 && p != this && hurtTime == 0 && getHitBox().overlaps(hurtbox)){
+				controlEnabled = false;
+				hurtTime = 10;
+				attackTime = attackCounter;
+				health -= 20;
+				setCharacterState(0);
+				if(p.direction == 1){
+					setXVelocity(5);
+				}
+				else{
+					setXVelocity(-5);
+				}
+			}
+		}
+		if(health <= 0){
+			die();
+		}
 	}
 	public void move(){
 		if(getXVelocity() != 0 && grounded && controlEnabled){
@@ -122,9 +143,21 @@ public class PlayerEntity extends MovingEntity {
 		if(animationState == 6){
 			attacking();
 		}
+		if(hurtTime > 0){
+			hurtTime--;
+			if(hurtTime == 0){
+				controlEnabled = true;
+			}
+		}
 	}
 	
 	public void die(){
-		// put code for death here
+		health = 100;
+		setXPos(100);
+		setYPos(100);
+		setCharacterState(0);
+		controlEnabled = true;
+		hurtTime = 0;
+		attackCounter = attackTime;
 	}
 }
