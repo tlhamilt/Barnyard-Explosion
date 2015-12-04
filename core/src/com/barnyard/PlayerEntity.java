@@ -150,7 +150,9 @@ public class PlayerEntity extends MovingEntity {
 			}
 		}
 	}
-	
+	public void gotHit(int damage){
+		health -= damage;
+	}
 	public void die(){
 		health = 100;
 		setXPos(100);
