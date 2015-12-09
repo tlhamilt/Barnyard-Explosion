@@ -57,7 +57,7 @@ public class PlayerEntity extends MovingEntity {
 		}
 	}
 	public void walking(){
-		if(animationCounter % 2 == 1){//Temporary Walking Animation
+		if(animationCounter % 4 == 1){//Temporary Walking Animation
 			if(animationState == 0){			   //May need to change for added animations
 				setCharacterState(1);
 			}
