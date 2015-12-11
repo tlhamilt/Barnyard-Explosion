@@ -6,6 +6,7 @@ public class WeaponEntity extends ItemEntity{
 	private PlayerEntity pickedBy;
 	private boolean isMelee;
 	private int weaponDamage = 0;
+	@SuppressWarnings("unused")
 	private int magazine;
 	private int fireRate;
 	private int bulletSpeed;

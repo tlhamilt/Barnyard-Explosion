@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class TestPlayer extends MovingEntity {
+	@SuppressWarnings("unused")
 	private int health;
 	public int attackKey;
 	public int leftKey;
