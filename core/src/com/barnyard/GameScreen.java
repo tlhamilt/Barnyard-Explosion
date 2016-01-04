@@ -32,10 +32,10 @@ public class GameScreen implements Screen{
 		camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
-		horseTextures = new Texture[]{new Texture("HorseStanding.png"),new Texture("HorseWalking.png"),new Texture("HorsePunching.png"),new Texture("HorseSound.png")};
-		cowTextures = new Texture[]{new Texture("CowStanding.png"),new Texture("CowWalking.png"),new Texture("CowPunching.png"),new Texture("CowSound.png")};
-		pigTextures = new Texture[]{new Texture("PigStanding.png"),new Texture("PigWalking.png"),new Texture("PigPunching.png")};
-		chickenTextures = new Texture[]{new Texture("ChickenStanding.png"),new Texture("ChickenWalking.png"),new Texture("ChickenPunching.png")};
+		//horseTextures = new Texture[]{new Texture("HorseStanding.png"),new Texture("HorseWalking.png"),new Texture("HorsePunching.png"),new Texture("HorseSound.png")};
+		//cowTextures = new Texture[]{new Texture("CowStanding.png"),new Texture("CowWalking.png"),new Texture("CowPunching.png"),new Texture("CowSound.png")};
+		//pigTextures = new Texture[]{new Texture("PigStanding.png"),new Texture("PigWalking.png"),new Texture("PigPunching.png")};
+		//chickenTextures = new Texture[]{new Texture("ChickenStanding.png"),new Texture("ChickenWalking.png"),new Texture("ChickenPunching.png")};
 
 		blockImg = new Texture("GroundMiddle.png");
 		punchImg = new Texture("PunchEffect.png");

@@ -82,17 +82,23 @@ public class GameplayOptions extends ClickListener implements Screen{
 	public void clicked(InputEvent event, float x, float y) {
     	
 		if(event.getListenerActor().getName() == "Item Spawn"){
-    		//Insert 
-		 }else if(event.getListenerActor().getName() == "Options"){
-			 System.out.println("Options");
+    		//Insert Item Spawn Options here  -  Possibly its own screen
+		 }else if(event.getListenerActor().getName() == "Life Bar"){
+			 //insert switch here for changing amount of life
+		 }else if(event.getListenerActor().getName() == "Lives"){
 			 dispose();
-		 }else if(event.getListenerActor().getName() == "Credits"){
-			 System.out.println("Credits");
-			 dispose();
+		     game.setScreen(new MainMenuScreen(game));
+			 //Insert number of lives for tracking winners  -  This may not be implemented
+			 //If consensus is short one life rounds
 		 }else{
 			 System.err.println("Error: Unassigned Button Selected");
 		 }
     }
+	@Override
+	public void dispose() {
+		stage.dispose();	
+		skin.dispose();
+	}
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
@@ -114,8 +120,5 @@ public class GameplayOptions extends ClickListener implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
-	@Override
-	public void dispose() {
-		stage.dispose();		
-	}	
+		
 }

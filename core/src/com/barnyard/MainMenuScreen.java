@@ -82,8 +82,8 @@ public class MainMenuScreen extends ClickListener implements Screen{
 	        game.setScreen(new GameOptionsScreen(game));
 	          
 		 }else if(event.getListenerActor().getName() == "Options"){
-			 System.out.println("Options");
 			 dispose();
+		     game.setScreen(new GameplayOptions(game));
 		 }else if(event.getListenerActor().getName() == "Credits"){
 			 System.out.println("Credits");
 			 dispose();

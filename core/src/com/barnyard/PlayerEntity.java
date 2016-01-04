@@ -24,7 +24,7 @@ public class PlayerEntity extends MovingEntity {
 	public int attackY;
 	Collision parent;
 	public Sprite attackSprite;
-	// variable for weapon eqquiped
+	// variable for weapon equiped
 
 	public PlayerEntity(int xPos, int yPos, int width, int height, BarnyardExplosion game, 
 			Texture animations, int xVelocity, int yVelocity, int leftKey, int rightKey, int jumpKey, 
@@ -153,12 +153,14 @@ public class PlayerEntity extends MovingEntity {
 	public void gotHit(int damage){
 		health -= damage;
 	}
-	public void die(){
+	public void die(){ //Reason for Teleporting randomly //FIX THIS!
 		health = 100;
 		setXPos(100);
 		setYPos(100);
+		//game.players.remove(this);  //Does not work
+		System.out.println("Dead!");
 		setCharacterState(0);
-		controlEnabled = true;
+		controlEnabled = false;
 		hurtTime = 0;
 		attackCounter = attackTime;
 	}
