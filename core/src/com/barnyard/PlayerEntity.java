@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
+//CLEANUP NEEDED: REMOVE IRRELEVANT CODE AND MOVE ALL PLAYER CODE HERE
+
 public class PlayerEntity extends MovingEntity {
 	private int health;
 	public int attackKey;

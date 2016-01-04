@@ -20,11 +20,11 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 	BarnyardExplosion game;
 	
 	private int playerCount = 0;	
-	private Sprite[] characters = new Sprite[]{new Sprite(new Texture("Horse.png")),
+	private Sprite[] characters = new Sprite[]{new Sprite(new Texture("Horse.png")), //Use arraylist and read from text file to allow for more characters
 			new Sprite(new Texture("Cow.png")),new Sprite(new Texture("Chicken.png")),
 			new Sprite(new Texture("Pig.png"))};
 			//Format:Standing,Walking,Walking,Walking,Walking,Walking,punch,speech
-	
+			//Possibly reduce amount of frames needed
 	private final int characterCount = characters.length;
     OrthographicCamera camera;
     int [][] controls = {{Keys.LEFT, Keys.RIGHT, Keys.UP, Keys.DOWN},{Keys.A, Keys.D, Keys.W, Keys.S},
@@ -94,8 +94,7 @@ public class GameOptionsScreen implements InputProcessor, Screen {
 			}
 		}
 		if(X > 760 && Y > 440){
-			setLevel();
-			game.setScreen(new GameScreen(game));
+			game.setScreen(new GameScreen(game));//Add Level Selection Screen here
 		}
 		return false;
 	}

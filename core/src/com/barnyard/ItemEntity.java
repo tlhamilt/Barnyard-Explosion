@@ -8,7 +8,9 @@ public class ItemEntity extends MovingEntity{
 		super(xPos, yPos, width, height, game, sprite, xVelocity, yVelocity);
 		
 	}
-	
+	public void useItem(){ //Find way to implement use of unique items
+		 
+	}
 	public void move(){
 		
 	}

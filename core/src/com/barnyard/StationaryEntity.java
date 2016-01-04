@@ -2,6 +2,8 @@ package com.barnyard;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+//CREATE ITEM SPAWNER AND IMPLEMENT THIS CLASS
+
 public abstract class StationaryEntity extends Entity{
 	
 	private boolean topOpen;

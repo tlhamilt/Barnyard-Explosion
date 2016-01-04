@@ -2,6 +2,8 @@ package com.barnyard;
 
 import com.badlogic.gdx.math.Rectangle;
 
+//NEEDS CLEANUP WORK: CONSOLIDATE COLLISION CODE!
+
 public class Collision {
 	int isColliding(MovingEntity e1, StationaryEntity e2){
 		// This method determines if a player and a block are colliding, and if so,

@@ -31,6 +31,8 @@ public class GameplayOptions extends ClickListener implements Screen{
         TextButton startButton = new TextButton("Item Spawn", skin);
         TextButton optionsButton = new TextButton("Life Bar", skin);
         TextButton creditsButton = new TextButton("Lives", skin); 
+        
+        //Add Back button
 
         startButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8 , Gdx.graphics.getHeight() / 2 + 90);
         optionsButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8 , Gdx.graphics.getHeight() / 2 + 10);
@@ -87,7 +89,7 @@ public class GameplayOptions extends ClickListener implements Screen{
 			 //insert switch here for changing amount of life
 		 }else if(event.getListenerActor().getName() == "Lives"){
 			 dispose();
-		     game.setScreen(new MainMenuScreen(game));
+		     game.setScreen(new MainMenuScreen(game));//Temp back button
 			 //Insert number of lives for tracking winners  -  This may not be implemented
 			 //If consensus is short one life rounds
 		 }else{

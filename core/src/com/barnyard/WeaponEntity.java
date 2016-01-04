@@ -2,6 +2,8 @@ package com.barnyard;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+//STILL NEEDS FINALIZING
+
 public class WeaponEntity extends ItemEntity{
 	private PlayerEntity pickedBy;
 	private boolean isMelee;
@@ -33,14 +35,14 @@ public class WeaponEntity extends ItemEntity{
 	public void drop(){
 		pickedBy = null;
 	}
-	public void attack(){
+	public void useItem(){
 		if(isMelee){
-			stab();
+			swing();
 		}else{
 			shoot();
-		}	
+		}	 
 	}
-	public void stab(){
+	public void swing(){
 			
 	}
 	public void shoot(){
